@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Playfair_Display } from 'next/font/google'
+import Navbar from "./components/layouts/Navbar";
+import Footer from "./components/layouts/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-playfair'
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,10 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${playfair.className} bg-white`}>
+        <Navbar/>
+         {children}
+        <Footer/>
       </body>
     </html>
   );
