@@ -1,8 +1,8 @@
-import { IoSearchOutline, IoPersonOutline, IoHeartOutline, IoBagOutline, IoLogoInstagram, IoLogoFacebook, IoLogoPinterest, IoLogoYoutube, IoStarSharp, IoChevronBack, IoChevronForward, IoEyeOutline, IoChevronDown } from 'react-icons/io5';
+import Link from 'next/link';
+import { IoHeartOutline, IoStarSharp, IoChevronBack, IoChevronForward, IoEyeOutline, IoChevronDown } from 'react-icons/io5';
+import { makeupProducts } from './data/makeupProducts';
 
 export default function ShanLorayMakeupPage() {
-  const sortOptions = ['Best Selling', 'Newest', 'Price: Low to High', 'Price: High to Low', 'Most Popular', 'Shade Range'];
-
   const faceCategories = ['Foundation', 'Concealer', 'Powder', 'Blush', 'Highlighter'];
   const eyesCategories = ['Eyeshadow', 'Eyeliner', 'Mascara', 'Eyebrow'];
   const lipsCategories = ['Lipstick', 'Lip Gloss', 'Lip Liner', 'Lip Care'];
@@ -10,84 +10,10 @@ export default function ShanLorayMakeupPage() {
   const coverageTypes = ['Sheer', 'Medium', 'Full'];
   const skinTones = ['Fair', 'Light', 'Medium', 'Tan', 'Deep', 'All Tones'];
 
-  const featuredProduct = {
-    name: 'Luxe Velvet Lipstick Collection',
-    description: 'Twelve signature shades in rich, long-lasting formula',
-    price: '$245',
-    rating: 5,
-    reviews: 412,
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=560&h=560&fit=crop',
-    badge: 'BESTSELLER'
-  };
-
-  const horizontalProducts = [
-    {
-      name: 'Luminous Foundation',
-      description: 'Buildable coverage with 24-hour wear',
-      price: '$78',
-      rating: 5,
-      reviews: 534,
-      image: 'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=460&h=280&fit=crop',
-      shades: ['#F5D4C4', '#E8C4B4', '#D4A894', '#C08874', '#A86854', '#8E5844']
-    },
-    {
-      name: 'Nude Eyeshadow Palette',
-      description: 'Ten versatile shades for every look',
-      price: '$145',
-      rating: 5,
-      reviews: 298,
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=460&h=280&fit=crop',
-      badge: 'NEW'
-    }
-  ];
-
-  const squareProducts = [
-    {
-      name: 'Silk Touch Concealer',
-      description: 'Full coverage brightening formula',
-      price: '$52',
-      rating: 5,
-      reviews: 621,
-      image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop',
-      shades: ['#FADCC4', '#E8C8B0', '#D4A890', '#B88868', '#9C6848', '#7E5438']
-    },
-    {
-      name: 'Radiant Blush Duo',
-      description: 'Buildable color with luminous finish',
-      price: '$68',
-      rating: 5,
-      reviews: 445,
-      image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=300&h=300&fit=crop'
-    },
-    {
-      name: 'Glow Highlighter',
-      description: 'Multi-dimensional shimmer',
-      price: '$58',
-      rating: 5,
-      reviews: 789,
-      image: 'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=300&h=300&fit=crop'
-    }
-  ];
-
-  const rectangularProducts = [
-    {
-      name: 'Complete Makeup Artist Set',
-      description: 'Professional collection with face, eyes, and lips essentials for flawless artistry',
-      price: '$395',
-      rating: 5,
-      reviews: 203,
-      image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=470&h=400&fit=crop',
-      badge: 'LIMITED EDITION'
-    },
-    {
-      name: 'Travel Glam Collection',
-      description: 'Your complete makeup routine in luxurious travel-friendly sizes',
-      price: '$185',
-      rating: 5,
-      reviews: 167,
-      image: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=470&h=400&fit=crop'
-    }
-  ];
+  const featuredProduct = makeupProducts.find(p => p.category === 'featured')!;
+  const horizontalProducts = makeupProducts.filter(p => p.category === 'horizontal');
+  const squareProducts = makeupProducts.filter(p => p.category === 'square');
+  const rectangularProducts = makeupProducts.filter(p => p.category === 'rectangular');
 
   return (
     <div className="bg-white font-['Cormorant_Garamond']">
@@ -118,7 +44,7 @@ export default function ShanLorayMakeupPage() {
 
       {/* Breadcrumb Bar */}
       <div className="min-h-[48px] bg-[#FDFBF7] px-[120px] flex items-center">
-        <span className="text-[15px] font-normal text-[#8B7355] cursor-pointer">Home</span>
+        <Link href="/" className="text-[15px] font-normal text-[#8B7355] cursor-pointer hover:underline">Home</Link>
         <span className="text-[15px] font-normal text-[#666666] mx-2">/</span>
         <span className="text-[15px] font-normal text-[#8B7355] cursor-pointer">Shop</span>
         <span className="text-[15px] font-normal text-[#666666] mx-2">/</span>
@@ -137,7 +63,6 @@ export default function ShanLorayMakeupPage() {
                 All Makeup
               </div>
               
-              {/* Face Category */}
               <div>
                 <div className="inline-flex items-center px-[20px] py-[10px] bg-[#F5F1EA] text-[#3D3D3D] text-[14px] font-medium rounded-full cursor-pointer gap-2">
                   <span>Face</span>
@@ -152,7 +77,6 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Eyes Category */}
               <div>
                 <div className="inline-flex items-center px-[20px] py-[10px] bg-[#F5F1EA] text-[#3D3D3D] text-[14px] font-medium rounded-full cursor-pointer gap-2">
                   <span>Eyes</span>
@@ -167,7 +91,6 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Lips Category */}
               <div>
                 <div className="inline-flex items-center px-[20px] py-[10px] bg-[#F5F1EA] text-[#3D3D3D] text-[14px] font-medium rounded-full cursor-pointer gap-2">
                   <span>Lips</span>
@@ -182,34 +105,22 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Sets & Palettes */}
               <div className="inline-flex items-center px-[20px] py-[10px] bg-[#F5F1EA] text-[#3D3D3D] text-[14px] font-medium rounded-full cursor-pointer gap-2">
                 <span>Sets & Palettes</span>
                 <IoChevronDown className="w-[14px] h-[14px]" />
               </div>
             </div>
 
-            {/* Additional Filters */}
             <div className="border-t border-[#E8E3D9] pt-[24px] space-y-[20px]">
-              {/* Price Range */}
               <div>
                 <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[12px]">Price Range</h4>
                 <div className="flex items-center gap-[8px]">
-                  <input 
-                    type="text" 
-                    placeholder="$0" 
-                    className="w-[100px] h-[36px] px-3 border border-[#E8E3D9] rounded-[6px] text-[14px] font-normal"
-                  />
+                  <input type="text" placeholder="$0" className="w-[100px] h-[36px] px-3 border border-[#E8E3D9] rounded-[6px] text-[14px] font-normal" />
                   <span className="text-[14px] text-[#666666]">—</span>
-                  <input 
-                    type="text" 
-                    placeholder="$500" 
-                    className="w-[100px] h-[36px] px-3 border border-[#E8E3D9] rounded-[6px] text-[14px] font-normal"
-                  />
+                  <input type="text" placeholder="$500" className="w-[100px] h-[36px] px-3 border border-[#E8E3D9] rounded-[6px] text-[14px] font-normal" />
                 </div>
               </div>
 
-              {/* Finish */}
               <div>
                 <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[12px]">Finish</h4>
                 <div className="space-y-[8px]">
@@ -222,7 +133,6 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Coverage */}
               <div>
                 <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[12px]">Coverage</h4>
                 <div className="space-y-[8px]">
@@ -235,7 +145,6 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Skin Tone */}
               <div>
                 <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[12px]">Skin Tone</h4>
                 <div className="space-y-[8px]">
@@ -248,7 +157,6 @@ export default function ShanLorayMakeupPage() {
                 </div>
               </div>
 
-              {/* Apply Button */}
               <button className="w-full h-[48px] bg-[#8B7355] text-white text-[15px] font-medium rounded-[8px]">
                 Apply
               </button>
@@ -260,11 +168,9 @@ export default function ShanLorayMakeupPage() {
         <div className="flex-1">
           {/* Toolbar */}
           <div className="min-h-[64px] flex items-center justify-between mb-[48px]">
-            <span className="text-[15px] font-normal text-[#666666]">Showing 42 of 156 makeup products</span>
-            
+            <span className="text-[15px] font-normal text-[#666666]">Showing {makeupProducts.length} of 156 makeup products</span>
             <div className="flex items-center gap-[16px]">
               <span className="text-[15px] font-normal text-[#666666]">Sort by:</span>
-              
               <div className="relative">
                 <button className="w-[240px] min-h-[48px] px-4 py-[14px] bg-white border border-[#E8E3D9] rounded-[8px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-between cursor-pointer">
                   <span className="text-[15px] font-medium text-[#2B2B2B]">Best Selling</span>
@@ -274,9 +180,13 @@ export default function ShanLorayMakeupPage() {
             </div>
           </div>
 
-          {/* Row Pattern 1: Large Featured + Two Stacked Horizontal */}
+          {/* Row 1: Large Featured + Two Stacked Horizontal */}
           <div className="flex gap-[20px] mb-[64px]">
-            <div className="w-[460px] h-[560px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer">
+            {/* Featured Product */}
+            <Link 
+              href={`/Makeup/${featuredProduct.slug}`}
+              className="w-[460px] h-[560px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer block"
+            >
               <div className="relative w-full h-[380px]">
                 <img 
                   src={featuredProduct.image} 
@@ -284,9 +194,11 @@ export default function ShanLorayMakeupPage() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 
-                <div className="absolute top-[20px] right-[20px] px-[16px] py-[8px] bg-[#C9A870] text-white text-[12px] font-medium rounded-full">
-                  {featuredProduct.badge}
-                </div>
+                {featuredProduct.badge && (
+                  <div className="absolute top-[20px] right-[20px] px-[16px] py-[8px] bg-[#C9A870] text-white text-[12px] font-medium rounded-full">
+                    {featuredProduct.badge}
+                  </div>
+                )}
                 
                 <div className="absolute bottom-0 left-0 right-0 h-[180px] bg-gradient-to-t from-black/50 to-transparent" />
                 
@@ -306,11 +218,16 @@ export default function ShanLorayMakeupPage() {
                   <span className="text-[13px] font-normal text-[#999999] ml-1">({featuredProduct.reviews})</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
+            {/* Horizontal Products */}
             <div className="flex-1 flex flex-col gap-[20px]">
               {horizontalProducts.map((product, idx) => (
-                <div key={idx} className="w-full h-[270px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer flex">
+                <Link 
+                  key={idx} 
+                  href={`/Makeup/${product.slug}`}
+                  className="w-full h-[270px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer flex block"
+                >
                   <div className="w-[280px] h-full relative overflow-hidden">
                     <img 
                       src={product.image} 
@@ -325,10 +242,10 @@ export default function ShanLorayMakeupPage() {
                     )}
                     
                     <div className="absolute top-[16px] left-[16px] flex gap-[8px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                      <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                         <IoHeartOutline className="w-[20px] h-[20px] text-[#2B2B2B]" />
                       </div>
-                      <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                      <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                         <IoEyeOutline className="w-[20px] h-[20px] text-[#2B2B2B]" />
                       </div>
                     </div>
@@ -359,15 +276,19 @@ export default function ShanLorayMakeupPage() {
                       <span className="text-[13px] font-normal text-[#999999] ml-1">({product.reviews})</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
 
-          {/* Row Pattern 2: Three Square Cards */}
+          {/* Row 2: Three Square Cards */}
           <div className="grid grid-cols-3 gap-[20px] mb-[64px]">
             {squareProducts.map((product, idx) => (
-              <div key={idx} className="group cursor-pointer">
+              <Link 
+                key={idx} 
+                href={`/Makeup/${product.slug}`}
+                className="group cursor-pointer block"
+              >
                 <div className="relative w-full aspect-square rounded-[12px] overflow-hidden mb-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-300">
                   <img 
                     src={product.image} 
@@ -376,10 +297,10 @@ export default function ShanLorayMakeupPage() {
                   />
                   
                   <div className="absolute top-[16px] right-[16px] flex flex-col gap-[8px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                       <IoHeartOutline className="w-[20px] h-[20px] text-[#2B2B2B]" />
                     </div>
-                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                       <IoEyeOutline className="w-[20px] h-[20px] text-[#2B2B2B]" />
                     </div>
                   </div>
@@ -408,14 +329,18 @@ export default function ShanLorayMakeupPage() {
                   ))}
                   <span className="text-[13px] font-normal text-[#999999] ml-1">({product.reviews})</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
-          {/* Row Pattern 3: Two Large Rectangular Cards */}
+          {/* Row 3: Two Large Rectangular Cards */}
           <div className="grid grid-cols-2 gap-[20px] mb-[64px]">
             {rectangularProducts.map((product, idx) => (
-              <div key={idx} className="w-full h-[400px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-300">
+              <Link 
+                key={idx} 
+                href={`/Makeup/${product.slug}`}
+                className="w-full h-[400px] bg-white rounded-[12px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08)] group cursor-pointer block hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] transition-all duration-300"
+              >
                 <div className="relative w-full h-[280px] overflow-hidden">
                   <img 
                     src={product.image} 
@@ -450,7 +375,7 @@ export default function ShanLorayMakeupPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -459,14 +384,8 @@ export default function ShanLorayMakeupPage() {
             <h3 className="text-[32px] font-medium text-[#1A1A1A] mb-2">Join Our Beauty Circle</h3>
             <p className="text-[16px] font-normal text-[#666666] mb-6">Get early access to new makeup launches</p>
             <div className="flex items-center gap-[12px]">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="w-[360px] h-[56px] px-5 bg-white text-[15px] font-normal text-[#2B2B2B] rounded-[8px] border border-[#E8E3D9]"
-              />
-              <button className="h-[56px] px-[32px] bg-[#8B7355] text-white text-[15px] font-medium rounded-[8px]">
-                Subscribe
-              </button>
+              <input type="email" placeholder="Enter your email" className="w-[360px] h-[56px] px-5 bg-white text-[15px] font-normal text-[#2B2B2B] rounded-[8px] border border-[#E8E3D9]" />
+              <button className="h-[56px] px-[32px] bg-[#8B7355] text-white text-[15px] font-medium rounded-[8px]">Subscribe</button>
             </div>
           </div>
 
@@ -475,17 +394,10 @@ export default function ShanLorayMakeupPage() {
             <button className="w-[44px] h-[44px] border border-[#E8E3D9] rounded-[6px] flex items-center justify-center cursor-pointer">
               <IoChevronBack className="w-[20px] h-[20px] text-[#666666]" />
             </button>
-            
-            <button className="w-[44px] h-[44px] bg-[#8B7355] text-white text-[15px] font-medium rounded-[6px]">
-              1
-            </button>
-            
+            <button className="w-[44px] h-[44px] bg-[#8B7355] text-white text-[15px] font-medium rounded-[6px]">1</button>
             {[2, 3, 4].map((num) => (
-              <button key={num} className="w-[44px] h-[44px] border border-[#E8E3D9] rounded-[6px] text-[15px] font-medium text-[#3D3D3D] cursor-pointer">
-                {num}
-              </button>
+              <button key={num} className="w-[44px] h-[44px] border border-[#E8E3D9] rounded-[6px] text-[15px] font-medium text-[#3D3D3D] cursor-pointer">{num}</button>
             ))}
-            
             <button className="w-[44px] h-[44px] border border-[#E8E3D9] rounded-[6px] flex items-center justify-center cursor-pointer">
               <IoChevronForward className="w-[20px] h-[20px] text-[#666666]" />
             </button>

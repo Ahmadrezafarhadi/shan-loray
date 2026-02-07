@@ -5,11 +5,13 @@ import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 
 
-const playfair = Playfair_Display({ 
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  variable: '--font-playfair'
-})
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  fallback: ['Georgia', 'serif'], // فونت جایگزین
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${playfair.className} bg-white`}>
+    <html lang="en" className={playfair.className} >
+      <body>
         <Navbar/>
          {children}
         <Footer/>

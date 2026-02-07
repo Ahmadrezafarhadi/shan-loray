@@ -19,6 +19,7 @@ import {
   FaApplePay,
   FaGooglePay
 } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function PaymentPage() {
   const cartItems = [
@@ -422,9 +423,11 @@ export default function PaymentPage() {
 
               {/* Action Buttons */}
               <div className="space-y-[16px] mb-[24px]">
-                <button className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-medium rounded-[8px] cursor-pointer">
-                  Place Order
-                </button>
+              <Link href="/Shopping-basket/Delivery-methods/Checkout/Order-confirmation">
+                  <button className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-medium rounded-[8px] cursor-pointer">
+                    Place Order
+                  </button>
+              </Link>
                 <button className="w-full flex items-center justify-center gap-[8px] text-[14px] font-medium text-[#666666] cursor-pointer">
                   <IoArrowBackOutline className="w-[16px] h-[16px]" />
                   <span>Back to Delivery Methods</span>

@@ -24,14 +24,14 @@ import Link from 'next/link';
 
 export default function AccountDashboard() {
   const navigationItems = [
-    { icon: IoPersonOutline, label: 'Account Dashboard', active: true, badge: null },
-    { icon: IoBagCheckOutline, label: 'Order History', active: false, badge: null },
-    { icon: IoHeartOutline, label: 'Wishlist', active: false, badge: '12' },
-    { icon: IoSparkles, label: 'Beauty Profile', active: false, tag: 'Complete Analysis' },
-    { icon: IoRibbonOutline, label: 'Loyalty Program', active: false, badge: '2,450' },
-    { icon: IoCalendarOutline, label: 'My Routines', active: false, badge: null },
-    { icon: IoStarSharp, label: 'Reviews & Ratings', active: false, badge: null },
-    { icon: IoSettingsOutline, label: 'Account Settings', active: false, badge: null }
+    { icon: IoPersonOutline, label: 'Account Dashboard', active: true, badge: null, link: "/" },
+    { icon: IoBagCheckOutline, label: 'Order History', active: false, badge: null, link: "/Dashboard/Track-orders" },
+    { icon: IoHeartOutline, label: 'Wishlist', active: false, badge: '12', link: "/Dashboard/Wishlist" },
+    { icon: IoSparkles, label: 'Beauty Profile', active: false, tag: 'Complete Analysis', link: "/" },
+    { icon: IoRibbonOutline, label: 'Loyalty Program', active: false, badge: '2,450', link: "/" },
+    { icon: IoCalendarOutline, label: 'My Routines', active: false, badge: null, link: "/" },
+    { icon: IoStarSharp, label: 'Reviews & Ratings', active: false, badge: null, link: "/" },
+    { icon: IoSettingsOutline, label: 'Account Settings', active: false, badge: null, link: "/Dashboard/Account-settings" }
   ];
 
   const currentOrders = [
@@ -129,7 +129,7 @@ export default function AccountDashboard() {
   ];
 
   const settingsItems = [
-    { icon: IoLocationOutline, label: 'Shipping Addresses', count: '2 saved' },
+    { icon: IoLocationOutline, label: 'Shipping Addresses', count: '2 saved', link: '/Dashboard/Shipping-address' },
     { icon: IoCardOutline, label: 'Payment Methods', count: '3 cards',  link: '/Dashboard/Payment-methods' },
     { icon: IoNotificationsOutline, label: 'Notification Preferences', count: null },
     { icon: IoShieldCheckmarkOutline, label: 'Privacy Settings', count: null }
@@ -176,30 +176,42 @@ export default function AccountDashboard() {
 
             {/* Navigation Menu */}
             <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[8px] mb-[24px]">
-              {navigationItems.map((item) => (
-                <div
-                  key={item.label}
-                  className={`flex items-center justify-between h-[56px] px-[20px] rounded-[8px] cursor-pointer ${
-                    item.active ? 'bg-[#FDFBF7]' : 'hover:bg-[#FDFBF7]'
-                  }`}
-                >
-                  <div className="flex items-center gap-[16px]">
-                    <item.icon className={`w-[22px] h-[22px] ${item.active ? 'text-[#8B7355]' : 'text-[#666666]'}`} />
-                    <span className={`text-[15px] font-normal ${item.active ? 'text-[#8B7355] font-medium' : 'text-[#2B2B2B]'}`}>
-                      {item.label}
-                    </span>
-                  </div>
-                  {item.badge ? (
-                    <div className="bg-[#C9A870] text-white text-[11px] font-medium px-[8px] py-[2px] rounded-full">
-                      {item.badge}
-                    </div>
-                  ) : item.tag ? (
-                    <div className="bg-[#8B7355] text-white text-[10px] font-normal px-[8px] py-[2px] rounded-[4px]">
-                      {item.tag}
-                    </div>
-                  ) : null}
+            {navigationItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.link}
+                className={`flex items-center justify-between h-[56px] px-[20px] rounded-[8px] cursor-pointer transition-colors ${
+                  item.active ? 'bg-[#FDFBF7]' : 'hover:bg-[#FDFBF7]'
+                }`}
+              >
+                <div className="flex items-center gap-[16px]">
+                  <item.icon
+                    className={`w-[22px] h-[22px] ${
+                      item.active ? 'text-[#8B7355]' : 'text-[#666666]'
+                    }`}
+                  />
+                  <span
+                    className={`text-[15px] ${
+                      item.active
+                        ? 'text-[#8B7355] font-medium'
+                        : 'text-[#2B2B2B]'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </div>
-              ))}
+
+                {item.badge ? (
+                  <div className="bg-[#C9A870] text-white text-[11px] font-medium px-[8px] py-[2px] rounded-full">
+                    {item.badge}
+                  </div>
+                ) : item.tag ? (
+                  <div className="bg-[#8B7355] text-white text-[10px] px-[8px] py-[2px] rounded-[4px]">
+                    {item.tag}
+                  </div>
+                ) : null}
+              </Link>
+            ))}
             </div>
 
             {/* Quick Stats Panel */}
