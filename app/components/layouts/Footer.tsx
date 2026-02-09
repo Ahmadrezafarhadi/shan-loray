@@ -4,8 +4,8 @@ export default function Footer() {
   return (
     <div>
      {/* Footer */}
-      <footer className="w-full min-h-[440px] bg-[#2B2B2B] px-[120px] py-[112px]">
-        <div className="grid grid-cols-4 gap-[64px] mb-[72px]">
+      <footer className="w-full min-h-[440px] bg-[#2B2B2B] px-4 sm:px-6 md:px-8 lg:px-[120px] py-[112px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 lg:gap-[64px] mb-[72px]">
           <div>
             <h3 className="text-[24px] font-semibold text-white tracking-[3px] mb-5">SHAN LORAY</h3>
             <p className="text-[16px] font-light italic text-[#C4B5A0] mb-6">Timeless Luxury Beauty</p>
@@ -55,9 +55,9 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-[#3D3D3D] pt-8 flex justify-between items-center">
+        <div className="border-t border-[#3D3D3D] pt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <p className="text-[14px] font-normal text-[#808080]">© 2024 Shan Loray. All rights reserved.</p>
-          <div className="flex gap-10">
+          <div className="flex flex-wrap gap-4 sm:gap-10">
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
               <span key={link} className="text-[14px] font-normal text-[#808080] cursor-pointer">
                 {link}
@@ -69,3 +69,4 @@ export default function Footer() {
     </div>
   )
 }
+

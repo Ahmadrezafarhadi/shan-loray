@@ -46,29 +46,29 @@ export default function SkinAnalysisPage() {
   ];
 
   const morningProducts = [
-    { name: 'Gentle Cleanser', brand: 'Shan Loray', benefit: 'Purifying & balancing', price: '$58', rating: 5, reviews: 342, image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=280&h=280&fit=crop' },
-    { name: 'Vitamin C Serum', brand: 'Shan Loray', benefit: 'Brightening & protection', price: '$125', rating: 5, reviews: 521, image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=280&h=280&fit=crop' },
-    { name: 'Hydrating Moisturizer', brand: 'Shan Loray', benefit: 'Deep moisture lock', price: '$89', rating: 5, reviews: 467, image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=280&h=280&fit=crop' },
-    { name: 'SPF 50 Sunscreen', brand: 'Shan Loray', benefit: 'Broad spectrum defense', price: '$72', rating: 5, reviews: 789, image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=280&h=280&fit=crop' }
+    { name: 'Gentle Cleanser', brand: 'Shan Loray', benefit: 'Purifying & balancing', price: '$58', rating: 5, reviews: 342, image: '/images/remote/7bfed6159293.jpg' },
+    { name: 'Vitamin C Serum', brand: 'Shan Loray', benefit: 'Brightening & protection', price: '$125', rating: 5, reviews: 521, image: '/images/remote/d55c379de35e.jpg' },
+    { name: 'Hydrating Moisturizer', brand: 'Shan Loray', benefit: 'Deep moisture lock', price: '$89', rating: 5, reviews: 467, image: '/images/remote/f4750b341ad1.jpg' },
+    { name: 'SPF 50 Sunscreen', brand: 'Shan Loray', benefit: 'Broad spectrum defense', price: '$72', rating: 5, reviews: 789, image: '/images/remote/5b70f06417a8.jpg' }
   ];
 
   const eveningProducts = [
-    { name: 'Makeup Remover', brand: 'Shan Loray', benefit: 'Gentle cleansing oil', price: '$54', rating: 5, reviews: 398, image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=280&h=280&fit=crop' },
-    { name: 'Exfoliating Toner', brand: 'Shan Loray', benefit: 'Refining & smoothing', price: '$68', rating: 5, reviews: 456, image: 'https://images.unsplash.com/photo-1620916297073-ff5f6c60c5b3?w=280&h=280&fit=crop' },
-    { name: 'Retinol Treatment', brand: 'Shan Loray', benefit: 'Anti-aging powerhouse', price: '$145', rating: 5, reviews: 634, image: 'https://images.unsplash.com/photo-1617897903246-719242758050?w=280&h=280&fit=crop' },
-    { name: 'Night Cream', brand: 'Shan Loray', benefit: 'Intensive repair', price: '$98', rating: 5, reviews: 523, image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=280&h=280&fit=crop' }
+    { name: 'Makeup Remover', brand: 'Shan Loray', benefit: 'Gentle cleansing oil', price: '$54', rating: 5, reviews: 398, image: '/images/remote/eff6d6c49955.jpg' },
+    { name: 'Exfoliating Toner', brand: 'Shan Loray', benefit: 'Refining & smoothing', price: '$68', rating: 5, reviews: 456, image: '/images/remote/2319e8e01e59.jpg' },
+    { name: 'Retinol Treatment', brand: 'Shan Loray', benefit: 'Anti-aging powerhouse', price: '$145', rating: 5, reviews: 634, image: '/images/remote/dab6f3a253f4.jpg' },
+    { name: 'Night Cream', brand: 'Shan Loray', benefit: 'Intensive repair', price: '$98', rating: 5, reviews: 523, image: '/images/remote/92dc8fde3a18.jpg' }
   ];
 
   const targetedProducts = [
-    { name: 'Eye Cream', brand: 'Shan Loray', benefit: 'Reduces dark circles', price: '$82', rating: 5, reviews: 412, image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=280&h=280&fit=crop' },
-    { name: 'Dark Spot Corrector', brand: 'Shan Loray', benefit: 'Brightening treatment', price: '$115', rating: 5, reviews: 367, image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=280&h=280&fit=crop' },
-    { name: 'Pore Minimizer', brand: 'Shan Loray', benefit: 'Refining serum', price: '$95', rating: 5, reviews: 289, image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=280&h=280&fit=crop' }
+    { name: 'Eye Cream', brand: 'Shan Loray', benefit: 'Reduces dark circles', price: '$82', rating: 5, reviews: 412, image: '/images/remote/472866d0cf57.jpg' },
+    { name: 'Dark Spot Corrector', brand: 'Shan Loray', benefit: 'Brightening treatment', price: '$115', rating: 5, reviews: 367, image: '/images/remote/35533588039a.jpg' },
+    { name: 'Pore Minimizer', brand: 'Shan Loray', benefit: 'Refining serum', price: '$95', rating: 5, reviews: 289, image: '/images/remote/b5821ea459e0.jpg' }
   ];
 
   const timelinePoints = [
-    { date: 'Dec 15, 2024', score: 85, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=120&h=120&fit=crop' },
-    { date: 'Nov 15, 2024', score: 81, image: 'https://images.unsplash.com/photo-1611349411198-e26e0d5f4a52?w=120&h=120&fit=crop' },
-    { date: 'Oct 15, 2024', score: 78, image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=120&h=120&fit=crop' }
+    { date: 'Dec 15, 2024', score: 85, image: '/images/remote/5468efc52034.jpg' },
+    { date: 'Nov 15, 2024', score: 81, image: '/images/remote/df0c5ace3691.jpg' },
+    { date: 'Oct 15, 2024', score: 78, image: '/images/remote/6c404e3a5324.jpg' }
   ];
 
   const faqs = [
@@ -93,7 +93,7 @@ export default function SkinAnalysisPage() {
 
         <div className="absolute right-[180px] top-1/2 transform -translate-y-1/2">
           <img 
-            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=400&fit=crop" 
+            src="/images/remote/e9ecdbb6aaef.jpg" 
             alt="Skin Analysis Technology"
             className="w-[400px] h-[400px] object-cover rounded-[8px] shadow-[0_12px_48px_rgba(0,0,0,0.12)]"
           />
@@ -452,7 +452,7 @@ export default function SkinAnalysisPage() {
           </div>
           <div className="flex-1">
             <img 
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=520&h=280&fit=crop" 
+              src="/images/remote/85194cecef30.jpg" 
               alt="Expert Consultant"
               className="w-full h-[280px] object-cover rounded-[12px] shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
             />
@@ -499,3 +499,7 @@ export default function SkinAnalysisPage() {
     </div>
   );
 }
+
+
+
+

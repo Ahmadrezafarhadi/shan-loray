@@ -42,7 +42,7 @@ export default function EditPersonalInformation() {
             <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[28px] mb-[24px]">
               <div className="flex flex-col items-center">
                 <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&h=240&fit=crop"
+                  src="/images/remote/0765b750a469.jpg"
                   alt="User Avatar"
                   className="w-[120px] h-[120px] rounded-full object-cover border-[3px] border-[#C9A870] mb-[16px]"
                 />
@@ -101,7 +101,7 @@ export default function EditPersonalInformation() {
             <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px] mb-[24px]">
               <div className="flex flex-col items-center">
                 <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=320&h=320&fit=crop"
+                  src="/images/remote/b4979c37b046.jpg"
                   alt="Profile"
                   className="w-[160px] h-[160px] rounded-full object-cover border-[3px] border-[#C9A870] mb-[20px]"
                 />
@@ -303,3 +303,7 @@ export default function EditPersonalInformation() {
     </div>
   );
 }
+
+
+
+

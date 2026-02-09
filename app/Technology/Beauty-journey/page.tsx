@@ -43,7 +43,7 @@ export default function BeautyJourneyPage() {
       step: 'Cleanse', 
       product: 'Gentle Cleanser',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop',
+      image: '/images/remote/915f8fa1dff6.jpg',
       usage: 'Apply to damp skin, massage gently',
       status: 'In Use',
       daysRemaining: 45,
@@ -54,7 +54,7 @@ export default function BeautyJourneyPage() {
       step: 'Treat',
       product: 'Vitamin C Serum',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&h=200&fit=crop',
+      image: '/images/remote/b72936a33aab.jpg',
       usage: '3-4 drops, pat until absorbed',
       status: 'In Use',
       daysRemaining: 30,
@@ -65,7 +65,7 @@ export default function BeautyJourneyPage() {
       step: 'Moisturize',
       product: 'Hydrating Cream',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=200&h=200&fit=crop',
+      image: '/images/remote/2fb2cccaedd4.jpg',
       usage: 'Apply evenly to face and neck',
       status: 'In Use',
       daysRemaining: 22,
@@ -76,7 +76,7 @@ export default function BeautyJourneyPage() {
       step: 'Protect',
       product: 'SPF 50 Sunscreen',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=200&h=200&fit=crop',
+      image: '/images/remote/ad6973d61dd3.jpg',
       usage: 'Generous layer as final step',
       status: 'Reorder',
       daysRemaining: 5,
@@ -90,7 +90,7 @@ export default function BeautyJourneyPage() {
       step: 'Remove',
       product: 'Makeup Remover',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=200&h=200&fit=crop',
+      image: '/images/remote/9d6df3b233e4.jpg',
       usage: 'Gentle circular motions',
       status: 'In Use',
       rating: 5,
@@ -100,7 +100,7 @@ export default function BeautyJourneyPage() {
       step: 'Exfoliate',
       product: 'Exfoliating Toner',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1620916297073-ff5f6c60c5b3?w=200&h=200&fit=crop',
+      image: '/images/remote/91af6a155017.jpg',
       usage: 'Apply with cotton pad',
       status: 'In Use',
       rating: 5,
@@ -110,7 +110,7 @@ export default function BeautyJourneyPage() {
       step: 'Treat',
       product: 'Retinol Treatment',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1617897903246-719242758050?w=200&h=200&fit=crop',
+      image: '/images/remote/7b5648b45211.jpg',
       usage: 'Pea-sized amount nightly',
       status: 'In Use',
       rating: 5,
@@ -120,7 +120,7 @@ export default function BeautyJourneyPage() {
       step: 'Nourish',
       product: 'Night Cream',
       brand: 'Shan Loray',
-      image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=200&h=200&fit=crop',
+      image: '/images/remote/dd4543013de6.jpg',
       usage: 'Apply generously before sleep',
       status: 'In Use',
       rating: 5,
@@ -129,22 +129,22 @@ export default function BeautyJourneyPage() {
   ];
 
   const weeklyTreatments = [
-    { day: 'Sunday', treatment: 'Hydrating Mask', image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=320&h=200&fit=crop', completed: true },
-    { day: 'Wednesday', treatment: 'Exfoliating Treatment', image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=320&h=200&fit=crop', completed: true },
-    { day: 'Friday', treatment: 'Anti-Aging Serum Boost', image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=320&h=200&fit=crop', completed: false }
+    { day: 'Sunday', treatment: 'Hydrating Mask', image: '/images/remote/cfc2bf89587e.jpg', completed: true },
+    { day: 'Wednesday', treatment: 'Exfoliating Treatment', image: '/images/remote/85a4bfd64064.jpg', completed: true },
+    { day: 'Friday', treatment: 'Anti-Aging Serum Boost', image: '/images/remote/de0a981ba8eb.jpg', completed: false }
   ];
 
   const analysisHistory = [
-    { date: 'Dec 15, 2024', score: 85, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=180&h=180&fit=crop' },
-    { date: 'Nov 15, 2024', score: 81, image: 'https://images.unsplash.com/photo-1611349411198-e26e0d5f4a52?w=180&h=180&fit=crop' },
-    { date: 'Oct 15, 2024', score: 78, image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=180&h=180&fit=crop' }
+    { date: 'Dec 15, 2024', score: 85, image: '/images/remote/b3909645cec9.jpg' },
+    { date: 'Nov 15, 2024', score: 81, image: '/images/remote/fdb330883d64.jpg' },
+    { date: 'Oct 15, 2024', score: 78, image: '/images/remote/fd22c3bfc8fe.jpg' }
   ];
 
   const recommendations = [
     {
       name: 'Intensive Eye Cream',
       description: 'Perfect for fine lines concern',
-      image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=360&h=360&fit=crop',
+      image: '/images/remote/353cedc7b5e3.jpg',
       match: '95%',
       price: '$82',
       rating: 5,
@@ -153,7 +153,7 @@ export default function BeautyJourneyPage() {
     {
       name: 'Brightening Essence',
       description: 'Addresses uneven tone',
-      image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=360&h=360&fit=crop',
+      image: '/images/remote/f0ab82e0660a.jpg',
       match: '92%',
       price: '$95',
       rating: 5,
@@ -162,7 +162,7 @@ export default function BeautyJourneyPage() {
     {
       name: 'Hydration Booster',
       description: 'Enhance moisture retention',
-      image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=360&h=360&fit=crop',
+      image: '/images/remote/85663ec56043.jpg',
       match: '90%',
       price: '$78',
       rating: 5,
@@ -171,10 +171,10 @@ export default function BeautyJourneyPage() {
   ];
 
   const savedLooks = [
-    { date: 'Dec 20, 2024', products: '5 Products', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=280&h=280&fit=crop' },
-    { date: 'Dec 15, 2024', products: '4 Products', image: 'https://images.unsplash.com/photo-1611349411198-e26e0d5f4a52?w=280&h=280&fit=crop' },
-    { date: 'Dec 10, 2024', products: '6 Products', image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=280&h=280&fit=crop' },
-    { date: 'Dec 5, 2024', products: '3 Products', image: 'https://images.unsplash.com/photo-1556740772-1a741367b93e?w=280&h=280&fit=crop' }
+    { date: 'Dec 20, 2024', products: '5 Products', image: '/images/remote/76951d0e9050.jpg' },
+    { date: 'Dec 15, 2024', products: '4 Products', image: '/images/remote/b4979c37b046.jpg' },
+    { date: 'Dec 10, 2024', products: '6 Products', image: '/images/remote/6f32c6035402.jpg' },
+    { date: 'Dec 5, 2024', products: '3 Products', image: '/images/remote/e9ecdbb6aaef.jpg' }
   ];
 
   const upcomingEvents = [
@@ -205,7 +205,7 @@ export default function BeautyJourneyPage() {
           <div className="relative">
             <div className="w-[320px] h-[320px] rounded-full overflow-hidden border-4 border-[#C9A870]">
               <img 
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=320&h=320&fit=crop"
+                src="/images/remote/85194cecef30.jpg"
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -548,7 +548,7 @@ export default function BeautyJourneyPage() {
       <div className="min-h-[360px] bg-[#F5F1EA] px-[120px] py-[64px]">
         <div className="flex items-center gap-[64px]">
           <img 
-            src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=320&fit=crop"
+            src="/images/remote/4ad7a1397422.jpg"
             alt="Beauty Advisor"
             className="w-[400px] h-[320px] object-cover rounded-[12px] shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
           />
@@ -672,3 +672,7 @@ export default function BeautyJourneyPage() {
     </div>
   );
 }
+
+
+
+

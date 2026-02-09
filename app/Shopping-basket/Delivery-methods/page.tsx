@@ -1,4 +1,9 @@
-import { 
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import {
   IoCheckmarkCircle,
   IoCarOutline,
   IoFlashOutline,
@@ -7,40 +12,38 @@ import {
   IoShieldCheckmarkOutline,
   IoLocationOutline,
   IoLockClosedOutline,
-  IoArrowBackOutline
+  IoArrowBackOutline,
 } from 'react-icons/io5';
+import { CartService, ProfileService } from '../../../lib/api';
+import { Cart, Address } from '../../../lib/api/config';
+import Loading from '../../../components/ui/Loading';
+import ErrorMessage from '../../../components/ui/ErrorMessage';
 
-import Link from 'next/link';
+interface DeliveryOption {
+  id: number;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  time: string;
+  arrival: string;
+  price: string;
+  priceValue: number;
+  description: string;
+  priceColor: string;
+}
 
 export default function DeliveryMethodsPage() {
-  const cartItems = [
-    {
-      id: 1,
-      brand: 'LA MER',
-      name: 'Crème de la Mer Moisturizing Cream',
-      quantity: 1,
-      price: 380,
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=160&h=160&fit=crop'
-    },
-    {
-      id: 2,
-      brand: 'ESTÉE LAUDER',
-      name: 'Advanced Night Repair Serum',
-      quantity: 2,
-      price: 115,
-      image: 'https://images.unsplash.com/photo-1617897903246-719242758050?w=160&h=160&fit=crop'
-    },
-    {
-      id: 3,
-      brand: 'TOM FORD',
-      name: 'Black Orchid Eau de Parfum',
-      quantity: 1,
-      price: 265,
-      image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=160&h=160&fit=crop'
-    }
-  ];
+  const router = useRouter();
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedDelivery, setSelectedDelivery] = useState<number>(1);
+  const [deliveryInstructions, setDeliveryInstructions] = useState('');
+  const [promoCode, setPromoCode] = useState('');
+  const [promoApplied, setPromoApplied] = useState(false);
 
-  const deliveryOptions = [
+  const deliveryOptions: DeliveryOption[] = [
     {
       id: 1,
       icon: IoCarOutline,
@@ -50,8 +53,7 @@ export default function DeliveryMethodsPage() {
       price: 'FREE',
       priceValue: 0,
       description: 'Free delivery on all orders over $75',
-      selected: true,
-      priceColor: '#7BA85D'
+      priceColor: '#7BA85D',
     },
     {
       id: 2,
@@ -62,8 +64,7 @@ export default function DeliveryMethodsPage() {
       price: '$25.00',
       priceValue: 25,
       description: '',
-      selected: false,
-      priceColor: '#1A1A1A'
+      priceColor: '#1A1A1A',
     },
     {
       id: 3,
@@ -74,8 +75,7 @@ export default function DeliveryMethodsPage() {
       price: '$45.00',
       priceValue: 45,
       description: 'Available in select locations',
-      selected: false,
-      priceColor: '#1A1A1A'
+      priceColor: '#1A1A1A',
     },
     {
       id: 4,
@@ -86,62 +86,176 @@ export default function DeliveryMethodsPage() {
       price: 'From $35.00',
       priceValue: 35,
       description: 'View international rates',
-      selected: false,
-      priceColor: '#1A1A1A'
-    }
+      priceColor: '#1A1A1A',
+    },
   ];
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const selectedShipping = deliveryOptions.find(opt => opt.selected);
-  const shipping = selectedShipping?.priceValue || 0;
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const [cartData, addressData] = await Promise.all([
+        CartService.getCart(),
+        ProfileService.getAddresses()
+      ]);
+
+      if (!cartData || cartData.items.length === 0) {
+        router.push('/Shopping-basket');
+        return;
+      }
+
+      setCart(cartData);
+      setAddresses(addressData);
+
+      if (addressData.length > 0) {
+        const defaultAddr = addressData.find((a) => a.is_default) || addressData[0];
+        setSelectedAddress(defaultAddr.id);
+      }
+
+      // Restore previous selection
+      const savedDelivery = sessionStorage.getItem('deliveryMethod');
+      if (savedDelivery) {
+        try {
+          const parsed = JSON.parse(savedDelivery);
+          setSelectedDelivery(parsed.id || 1);
+          setDeliveryInstructions(parsed.instructions || '');
+        } catch {
+          // ignore parse errors
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleContinueToPayment = () => {
+    const selectedOption = deliveryOptions.find((o) => o.id === selectedDelivery);
+
+    sessionStorage.setItem(
+      'deliveryMethod',
+      JSON.stringify({
+        id: selectedDelivery,
+        option: selectedOption,
+        instructions: deliveryInstructions,
+        addressId: selectedAddress,
+      })
+    );
+
+    router.push('/Shopping-basket/Delivery-methods/Checkout');
+  };
+
+  const handleApplyPromo = () => {
+    if (promoCode.trim()) {
+      setPromoApplied(true);
+    }
+  };
+
+  // Helper: get full name from Address
+  const getAddressFullName = (address: Address): string => {
+    return `${address.first_name} ${address.last_name}`.trim();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading text="Loading delivery options..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <ErrorMessage message={error} onRetry={fetchData} />
+      </div>
+    );
+  }
+
+  if (!cart) return null;
+
+  const subtotal = cart.total;
+  const selectedOption = deliveryOptions.find((o) => o.id === selectedDelivery);
+  const shipping = selectedOption?.priceValue || 0;
   const tax = subtotal * 0.1;
   const total = subtotal + shipping + tax;
 
+  const steps = [
+    { step: 1, label: 'Delivery Information', active: false, completed: true },
+    { step: 2, label: 'Delivery Method', active: true, completed: false },
+    { step: 3, label: 'Payment', active: false, completed: false },
+  ];
+
   return (
-    <div className="w-[1440px] min-h-[900px] bg-white font-['Cormorant_Garamond']">
-      {/* Breadcrumb Bar */}
-      <div className="min-h-[48px] bg-[#FDFBF7] px-[120px] flex items-center">
-        <span className="text-[15px] font-normal text-[#8B7355] cursor-pointer">Home</span>
-        <span className="text-[15px] font-normal text-[#666666] mx-2">/</span>
-        <span className="text-[15px] font-normal text-[#8B7355] cursor-pointer">Shopping Basket</span>
-        <span className="text-[15px] font-normal text-[#666666] mx-2">/</span>
-        <span className="text-[15px] font-normal text-[#666666]">Checkout</span>
+    <div className="bg-white font-['Cormorant_Garamond'] min-h-screen">
+      {/* Breadcrumb */}
+      <div className="min-h-[48px] bg-[#FDFBF7] px-4 sm:px-8 md:px-16 lg:px-[120px] flex items-center flex-wrap gap-1">
+        <Link href="/" className="text-[15px] font-normal text-[#8B7355] hover:underline">
+          Home
+        </Link>
+        <span className="text-[15px] text-[#666666] mx-2">/</span>
+        <Link href="/Shopping-basket" className="text-[15px] text-[#8B7355] hover:underline">
+          Shopping Basket
+        </Link>
+        <span className="text-[15px] text-[#666666] mx-2">/</span>
+        <span className="text-[15px] text-[#666666]">Delivery Method</span>
       </div>
 
-      {/* Progress Indicator */}
-      <div className="min-h-[120px] bg-gradient-to-b from-[#FDFBF7] to-white px-[120px] flex items-center justify-center">
-        <div className="max-w-[1200px] w-full">
-          <div className="flex items-center justify-between">
-            {[
-              { step: 1, label: 'Delivery Information', active: false, completed: true },
-              { step: 2, label: 'Delivery Method', active: true, completed: false },
-              { step: 3, label: 'Payment', active: false, completed: false }
-            ].map((item, index) => (
+      {/* Progress */}
+      <div className="bg-gradient-to-b from-[#FDFBF7] to-white px-4 sm:px-8 md:px-16 lg:px-[120px] py-6 md:py-8">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="hidden md:flex items-center justify-between">
+            {steps.map((item, index) => (
               <div key={item.step} className="flex items-center flex-1">
-                <div className="flex items-center gap-[16px]">
-                  <div className={`w-[48px] h-[48px] rounded-full flex items-center justify-center ${
-                    item.active 
-                      ? 'bg-[#8B7355] text-white' 
-                      : item.completed 
-                      ? 'bg-[#7BA85D] text-white' 
-                      : 'bg-white border-[2px] border-[#E8E3D9] text-[#999999]'
-                  }`}>
+                <div className="flex items-center gap-3 lg:gap-4">
+                  <div
+                    className={`w-10 h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      item.active
+                        ? 'bg-[#8B7355] text-white'
+                        : item.completed
+                        ? 'bg-[#7BA85D] text-white'
+                        : 'bg-white border-2 border-[#E8E3D9] text-[#999999]'
+                    }`}
+                  >
                     {item.completed ? (
-                      <IoCheckmarkCircle className="w-[28px] h-[28px]" />
+                      <IoCheckmarkCircle className="w-6 h-6 lg:w-7 lg:h-7" />
                     ) : (
-                      <span className="text-[20px] font-semibold">{item.step}</span>
+                      <span className="text-lg lg:text-xl font-semibold">{item.step}</span>
                     )}
                   </div>
-                  <div>
-                    <div className={`text-[18px] font-semibold ${
+                  <span
+                    className={`text-sm lg:text-lg font-semibold whitespace-nowrap ${
                       item.active ? 'text-[#8B7355]' : item.completed ? 'text-[#7BA85D]' : 'text-[#999999]'
-                    }`}>
-                      {item.label}
-                    </div>
-                  </div>
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </div>
-                {index < 2 && (
-                  <div className="flex-1 h-[2px] bg-[#E8E3D9] mx-[24px]" />
+                {index < 2 && <div className="flex-1 h-[2px] bg-[#E8E3D9] mx-4 lg:mx-6" />}
+              </div>
+            ))}
+          </div>
+          <div className="flex md:hidden items-center justify-center gap-3">
+            {steps.map((item) => (
+              <div key={item.step} className="flex items-center gap-2">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                    item.active
+                      ? 'bg-[#8B7355] text-white'
+                      : item.completed
+                      ? 'bg-[#7BA85D] text-white'
+                      : 'bg-white border-2 border-[#E8E3D9] text-[#999999]'
+                  }`}
+                >
+                  {item.completed ? <IoCheckmarkCircle className="w-5 h-5" /> : item.step}
+                </div>
+                {item.active && (
+                  <span className="text-sm font-semibold text-[#8B7355]">{item.label}</span>
                 )}
               </div>
             ))}
@@ -150,192 +264,284 @@ export default function DeliveryMethodsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="min-h-[600px] px-[120px] py-[48px]">
-        <div className="max-w-[1200px] mx-auto flex gap-[40px]">
-          {/* Left Column - Delivery Methods */}
-          <div className="w-[760px]">
-            {/* Delivery Method Selection Card */}
-            <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px] mb-[32px]">
-              <h2 className="text-[28px] font-semibold text-[#1A1A1A] mb-[32px]">Select Delivery Method</h2>
-
-              {/* Delivery Options */}
-              <div className="space-y-[16px]">
-                {deliveryOptions.map((option) => (
-                  <div
-                    key={option.id}
-                    className={`min-h-[120px] p-[20px] rounded-[8px] cursor-pointer ${
-                      option.selected 
-                        ? 'bg-[#FDFBF7] border-[2px] border-[#8B7355]' 
-                        : 'bg-white border-[1px] border-[#E8E3D9]'
-                    }`}
-                  >
-                    <div className="flex items-start gap-[16px]">
-                      {/* Radio Button */}
-                      <div className={`w-[20px] h-[20px] rounded-full border-[2px] flex items-center justify-center mt-[2px] flex-shrink-0 ${
-                        option.selected ? 'border-[#8B7355]' : 'border-[#E8E3D9]'
-                      }`}>
-                        {option.selected && (
-                          <div className="w-[10px] h-[10px] rounded-full bg-[#8B7355]" />
-                        )}
-                      </div>
-
-                      {/* Icon */}
-                      <option.icon className={`w-[32px] h-[32px] flex-shrink-0 ${
-                        option.selected ? 'text-[#8B7355]' : 'text-[#666666]'
-                      }`} />
-
-                      {/* Content */}
-                      <div className="flex-1">
-                        <div className="text-[18px] font-semibold text-[#1A1A1A] mb-[4px]">{option.title}</div>
-                        <div className="text-[15px] font-normal text-[#666666] mb-[2px]">{option.time}</div>
-                        <div className="text-[14px] font-light text-[#999999] mb-[8px]">{option.arrival}</div>
-                        {option.description && (
-                          <div className={`text-[13px] font-light ${
-                            option.id === 4 ? 'text-[#8B7355] font-medium cursor-pointer' : 'text-[#999999] italic'
-                          }`}>
-                            {option.description}
+      <div className="px-4 sm:px-8 md:px-16 lg:px-[120px] py-6 md:py-12">
+        <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10">
+          {/* Left Column */}
+          <div className="flex-1 min-w-0">
+            {/* Shipping Address */}
+            {addresses.length > 0 && (
+              <div className="bg-white rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-5 sm:p-8 mb-6 md:mb-8">
+                <h2 className="text-xl md:text-2xl font-semibold text-[#1A1A1A] mb-6">
+                  Shipping Address
+                </h2>
+                <div className="space-y-3">
+                  {addresses.map((address) => {
+                    const isSelected = selectedAddress === address.id;
+                    return (
+                      <div
+                        key={address.id}
+                        onClick={() => setSelectedAddress(address.id)}
+                        className={`p-4 rounded-lg cursor-pointer transition-all ${
+                          isSelected
+                            ? 'bg-[#FDFBF7] border-2 border-[#8B7355]'
+                            : 'bg-white border border-[#E8E3D9] hover:border-[#C9A870]'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                              isSelected ? 'border-[#8B7355]' : 'border-[#E8E3D9]'
+                            }`}
+                          >
+                            {isSelected && (
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#8B7355]" />
+                            )}
                           </div>
-                        )}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-base font-semibold text-[#1A1A1A] mb-1">
+                              {getAddressFullName(address)}
+                              {address.is_default && (
+                                <span className="ml-2 text-xs font-medium text-[#7BA85D] bg-[#F0F7EC] px-2 py-0.5 rounded-full">
+                                  Default
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-sm text-[#666666]">
+                              {address.address_line_1}
+                              {address.address_line_2 && `, ${address.address_line_2}`}
+                            </div>
+                            <div className="text-sm text-[#666666]">
+                              {address.city}, {address.state} {address.postal_code}
+                            </div>
+                            <div className="text-sm text-[#666666]">{address.country}</div>
+                            {address.phone && (
+                              <div className="text-sm text-[#666666] mt-1">{address.phone}</div>
+                            )}
+                          </div>
+                        </div>
                       </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
-                      {/* Price */}
-                      <div className="flex-shrink-0">
-                        <div 
-                          className="text-[18px] font-semibold"
-                          style={{ color: option.priceColor }}
+            {/* Delivery Method Selection */}
+            <div className="bg-white rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-5 sm:p-8 mb-6 md:mb-8">
+              <h2 className="text-2xl md:text-[28px] font-semibold text-[#1A1A1A] mb-6 md:mb-8">
+                Select Delivery Method
+              </h2>
+              <div className="space-y-3 md:space-y-4">
+                {deliveryOptions.map((option) => {
+                  const isSelected = selectedDelivery === option.id;
+                  return (
+                    <div
+                      key={option.id}
+                      onClick={() => setSelectedDelivery(option.id)}
+                      className={`p-4 sm:p-5 rounded-lg cursor-pointer transition-all ${
+                        isSelected
+                          ? 'bg-[#FDFBF7] border-2 border-[#8B7355]'
+                          : 'bg-white border border-[#E8E3D9] hover:border-[#C9A870]'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div
+                          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 flex-shrink-0 ${
+                            isSelected ? 'border-[#8B7355]' : 'border-[#E8E3D9]'
+                          }`}
                         >
-                          {option.price}
+                          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#8B7355]" />}
+                        </div>
+                        <option.icon
+                          className={`w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 ${
+                            isSelected ? 'text-[#8B7355]' : 'text-[#666666]'
+                          }`}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-4">
+                            <div className="min-w-0">
+                              <div className="text-base sm:text-lg font-semibold text-[#1A1A1A] mb-1">
+                                {option.title}
+                              </div>
+                              <div className="text-sm sm:text-[15px] text-[#666666] mb-0.5">
+                                {option.time}
+                              </div>
+                              <div className="text-xs sm:text-sm font-light text-[#999999] mb-2">
+                                {option.arrival}
+                              </div>
+                              {option.description && (
+                                <div
+                                  className={`text-xs sm:text-[13px] ${
+                                    option.id === 4
+                                      ? 'text-[#8B7355] font-medium cursor-pointer'
+                                      : 'text-[#999999] italic'
+                                  }`}
+                                >
+                                  {option.description}
+                                </div>
+                              )}
+                            </div>
+                            <div
+                              className="text-base sm:text-lg font-semibold flex-shrink-0"
+                              style={{ color: option.priceColor }}
+                            >
+                              {option.price}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* Delivery Instructions Section */}
-            <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px] mb-[32px]">
-              <label className="text-[16px] font-medium text-[#666666] mb-[12px] block">
+            {/* Delivery Instructions */}
+            <div className="bg-white rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-5 sm:p-8 mb-6 md:mb-8">
+              <label className="text-base font-medium text-[#666666] mb-3 block">
                 Delivery Instructions (Optional)
               </label>
               <textarea
+                value={deliveryInstructions}
+                onChange={(e) => setDeliveryInstructions(e.target.value)}
                 placeholder="Add any special delivery instructions..."
-                className="w-full min-h-[100px] p-[16px] border-[1.5px] border-[#E8E3D9] rounded-[8px] text-[15px] font-light italic text-[#999999] placeholder:text-[#999999] resize-none"
+                className="w-full min-h-[100px] p-4 border-[1.5px] border-[#E8E3D9] rounded-lg text-[15px] text-[#1A1A1A] placeholder:text-[#999999] placeholder:italic resize-none focus:outline-none focus:border-[#8B7355] transition-colors"
               />
             </div>
 
-            {/* Information Cards */}
-            <div className="grid grid-cols-2 gap-[20px]">
-              <div className="min-h-[80px] bg-[#FDFBF7] rounded-[8px] p-[16px] flex gap-[16px]">
-                <IoShieldCheckmarkOutline className="w-[28px] h-[28px] text-[#8B7355] flex-shrink-0" />
+            {/* Info Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+              <div className="bg-[#FDFBF7] rounded-lg p-4 flex gap-4">
+                <IoShieldCheckmarkOutline className="w-7 h-7 text-[#8B7355] flex-shrink-0" />
                 <div>
-                  <div className="text-[16px] font-semibold text-[#1A1A1A] mb-[4px]">Signature Confirmation</div>
-                  <div className="text-[13px] font-normal text-[#666666]">Available for orders over $500</div>
+                  <div className="text-base font-semibold text-[#1A1A1A] mb-1">
+                    Signature Confirmation
+                  </div>
+                  <div className="text-[13px] text-[#666666]">Available for orders over $500</div>
                 </div>
               </div>
-
-              <div className="min-h-[80px] bg-[#FDFBF7] rounded-[8px] p-[16px] flex gap-[16px]">
-                <IoLocationOutline className="w-[28px] h-[28px] text-[#8B7355] flex-shrink-0" />
+              <div className="bg-[#FDFBF7] rounded-lg p-4 flex gap-4">
+                <IoLocationOutline className="w-7 h-7 text-[#8B7355] flex-shrink-0" />
                 <div>
-                  <div className="text-[16px] font-semibold text-[#1A1A1A] mb-[4px]">Real-Time Tracking</div>
-                  <div className="text-[13px] font-normal text-[#666666]">Track your order every step</div>
+                  <div className="text-base font-semibold text-[#1A1A1A] mb-1">
+                    Real-Time Tracking
+                  </div>
+                  <div className="text-[13px] text-[#666666]">Track your order every step</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Sidebar - Order Summary */}
-          <div className="w-[360px]">
-            <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px]">
-              <h2 className="text-[24px] font-semibold text-[#1A1A1A] mb-[24px]">Order Summary</h2>
+          {/* Right Sidebar */}
+          <div className="w-full lg:w-[360px] flex-shrink-0">
+            <div className="bg-white rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-5 sm:p-8 lg:sticky lg:top-6">
+              <h2 className="text-xl md:text-2xl font-semibold text-[#1A1A1A] mb-6">
+                Order Summary
+              </h2>
 
-              {/* Product List */}
-              <div className="mb-[24px]">
-                {cartItems.map((item, index) => (
+              <div className="mb-6">
+                {cart.items.map((item, index) => (
                   <div key={item.id}>
-                    <div className="flex gap-[16px] min-h-[100px]">
+                    <div className="flex gap-3 sm:gap-4">
                       <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-[80px] h-[80px] rounded-[8px] object-cover flex-shrink-0"
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover flex-shrink-0"
                       />
-                      <div className="flex-1">
-                        <div className="text-[12px] font-medium text-[#8B7355] mb-[2px]">{item.brand}</div>
-                        <div className="text-[14px] font-normal text-[#1A1A1A] line-clamp-2 mb-[8px]">{item.name}</div>
-                        <div className="text-[14px] font-normal text-[#666666] mb-[4px]">
-                          {item.quantity} × ${item.price}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-medium text-[#8B7355] mb-0.5">
+                          {item.product.collection || 'Shan Loray'}
                         </div>
-                        <div className="text-[14px] font-semibold text-[#1A1A1A]">${item.price * item.quantity}</div>
+                        <div className="text-sm text-[#1A1A1A] line-clamp-2 mb-2">
+                          {item.product.name}
+                        </div>
+                        <div className="text-sm text-[#666666] mb-1">
+                          {item.quantity} x ${item.price.toFixed(2)}
+                        </div>
+                        <div className="text-sm font-semibold text-[#1A1A1A]">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </div>
                       </div>
                     </div>
-                    {index < cartItems.length - 1 && (
-                      <div className="h-[1px] bg-[#E8E3D9] my-[16px]" />
+                    {index < cart.items.length - 1 && (
+                      <div className="h-[1px] bg-[#E8E3D9] my-4" />
                     )}
                   </div>
                 ))}
               </div>
 
-              {/* Pricing Breakdown */}
-              <div className="mb-[24px]">
-                <div className="flex items-center justify-between mb-[12px]">
-                  <span className="text-[16px] font-normal text-[#666666]">Subtotal</span>
-                  <span className="text-[16px] font-normal text-[#1A1A1A]">${subtotal.toFixed(2)}</span>
+              <div className="mb-6">
+                <div className="flex justify-between mb-3">
+                  <span className="text-base text-[#666666]">Subtotal</span>
+                  <span className="text-base text-[#1A1A1A]">${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex items-center justify-between mb-[12px]">
-                  <span className="text-[16px] font-normal text-[#666666]">Shipping</span>
-                  <span className={`text-[16px] font-normal ${shipping === 0 ? 'text-[#7BA85D]' : 'text-[#1A1A1A]'}`}>
+                <div className="flex justify-between mb-3">
+                  <span className="text-base text-[#666666]">Shipping</span>
+                  <span className={`text-base ${shipping === 0 ? 'text-[#7BA85D]' : 'text-[#1A1A1A]'}`}>
                     {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
                   </span>
                 </div>
-                <div className="flex items-center justify-between mb-[24px]">
-                  <span className="text-[16px] font-normal text-[#666666]">Estimated Tax</span>
-                  <span className="text-[16px] font-normal text-[#1A1A1A]">${tax.toFixed(2)}</span>
+                <div className="flex justify-between mb-6">
+                  <span className="text-base text-[#666666]">Estimated Tax</span>
+                  <span className="text-base text-[#1A1A1A]">${tax.toFixed(2)}</span>
                 </div>
-
-                <div className="h-[1px] bg-[#E8E3D9] mb-[24px]" />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-[22px] font-semibold text-[#1A1A1A]">Order Total</span>
-                  <span className="text-[22px] font-semibold text-[#1A1A1A]">${total.toFixed(2)}</span>
+                <div className="h-[1px] bg-[#E8E3D9] mb-6" />
+                <div className="flex justify-between">
+                  <span className="text-xl md:text-[22px] font-semibold text-[#1A1A1A]">
+                    Order Total
+                  </span>
+                  <span className="text-xl md:text-[22px] font-semibold text-[#1A1A1A]">
+                    ${total.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
-              {/* Promo Code */}
-              <div className="mb-[24px]">
-                <div className="flex gap-[8px]">
+              <div className="mb-6">
+                <div className="flex gap-2">
                   <input
                     type="text"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Promo code"
-                    className="flex-1 h-[40px] px-[16px] border-[1.5px] border-[#E8E3D9] rounded-[8px] text-[15px] font-normal"
+                    className="flex-1 h-10 px-4 border-[1.5px] border-[#E8E3D9] rounded-lg text-[15px] focus:outline-none focus:border-[#8B7355]"
                   />
-                  <button className="h-[40px] px-[20px] bg-[#8B7355] text-white text-[14px] font-medium rounded-[8px] cursor-pointer">
+                  <button
+                    onClick={handleApplyPromo}
+                    className="h-10 px-5 bg-[#8B7355] text-white text-sm font-medium rounded-lg hover:bg-[#7A6A4A] transition-colors"
+                  >
                     Apply
                   </button>
                 </div>
+                {promoApplied && (
+                  <p className="text-xs text-[#7BA85D] mt-2">Promo code applied!</p>
+                )}
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-[16px] mb-[24px]">
-                <Link href="/Shopping-basket/Delivery-methods/Checkout">
-                    <button className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-medium rounded-[8px] cursor-pointer">
-                        Continue to Payment
-                    </button>
-                </Link>
-                <button className="w-full flex items-center justify-center gap-[8px] text-[14px] font-medium text-[#666666] cursor-pointer">
-                  <IoArrowBackOutline className="w-[16px] h-[16px]" />
-                  <span>Back to Delivery Information</span>
+              <div className="space-y-4 mb-6">
+                <button
+                  onClick={handleContinueToPayment}
+                  disabled={addresses.length > 0 && !selectedAddress}
+                  className="w-full h-14 bg-[#8B7355] text-white text-base font-medium rounded-lg hover:bg-[#7A6A4A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue to Payment
                 </button>
+                <Link
+                  href="/Shopping-basket"
+                  className="w-full flex items-center justify-center gap-2 text-sm font-medium text-[#666666] hover:text-[#8B7355] transition-colors"
+                >
+                  <IoArrowBackOutline className="w-4 h-4" />
+                  <span>Back to Shopping Basket</span>
+                </Link>
               </div>
 
-              {/* Trust Badges */}
-              <div className="flex items-center justify-around pt-[24px] border-t border-[#E8E3D9]">
-                <div className="flex flex-col items-center gap-[8px]">
-                  <IoLockClosedOutline className="w-[20px] h-[20px] text-[#666666]" />
-                  <span className="text-[12px] font-light text-[#666666]">Secure Checkout</span>
+              <div className="flex items-center justify-around pt-6 border-t border-[#E8E3D9]">
+                <div className="flex flex-col items-center gap-2">
+                  <IoLockClosedOutline className="w-5 h-5 text-[#666666]" />
+                  <span className="text-xs font-light text-[#666666]">Secure Checkout</span>
                 </div>
-                <div className="flex flex-col items-center gap-[8px]">
-                  <IoShieldCheckmarkOutline className="w-[20px] h-[20px] text-[#666666]" />
-                  <span className="text-[12px] font-light text-[#666666]">Money-Back</span>
+                <div className="flex flex-col items-center gap-2">
+                  <IoShieldCheckmarkOutline className="w-5 h-5 text-[#666666]" />
+                  <span className="text-xs font-light text-[#666666]">Money-Back</span>
                 </div>
               </div>
             </div>
@@ -345,3 +551,6 @@ export default function DeliveryMethodsPage() {
     </div>
   );
 }
+
+
+

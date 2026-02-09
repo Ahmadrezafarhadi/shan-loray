@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MakeupProduct, makeupProducts } from '../data/makeupProducts';
+import { useRouter } from 'next/navigation';
+import { Product } from '@/lib/api/config';
+import { ProductService } from '@/lib/api/products';
+import { CartService, WishlistService } from '@/lib/api';
 import { 
   IoHeartOutline,
   IoBagOutline,
@@ -19,71 +22,113 @@ import {
   IoReturnDownBackOutline,
   IoShieldCheckmarkOutline,
   IoColorPaletteOutline,
-  IoBrushOutline,
-  IoRibbonOutline,
-  IoEyeOutline
+  IoBrushOutline
 } from 'react-icons/io5';
 
 interface MakeupProductDetailClientProps {
-  product: MakeupProduct;
+  product: Product;
 }
 
 export default function MakeupProductDetailClient({ product }: MakeupProductDetailClientProps) {
+  const router = useRouter();
   const [selectedSize, setSelectedSize] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedThumb, setSelectedThumb] = useState(0);
   const [activeTab, setActiveTab] = useState('Details');
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [relatedError, setRelatedError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [relatedLoading, setRelatedLoading] = useState(true);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [wishlistAdded, setWishlistAdded] = useState(false);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
-  const relatedProducts = makeupProducts
-    .filter(p => p.slug !== product.slug)
-    .slice(0, 4);
+  useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        setRelatedLoading(true);
+        setRelatedError(null);
+        const response = await ProductService.getMakeupProducts();
+        const items = response.data.filter(p => p.slug !== product.slug).slice(0, 4);
+        setRelatedProducts(items);
+      } catch (err) {
+        setRelatedError(err instanceof Error ? err.message : 'Failed to load related products');
+      } finally {
+        setRelatedLoading(false);
+      }
+    };
+
+    fetchRelated();
+  }, [product.slug]);
+
+  useEffect(() => {
+    const checkWishlist = async () => {
+      try {
+        const inWishlist = await WishlistService.checkWishlist(product.id);
+        setWishlistAdded(inWishlist);
+      } catch {
+        setWishlistAdded(false);
+      }
+    };
+
+    checkWishlist();
+  }, [product.id]);
 
   const featureIcons = [IoSparkles, IoColorPaletteOutline, IoBrushOutline, IoShieldCheckmarkOutline];
+  const thumbnailImages = product.thumbnail_images?.length ? product.thumbnail_images : [product.image];
+  const selectedPrice = product.sizes?.[selectedSize]?.price || product.price.toFixed(2);
 
-  const reviews = [
-    {
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop',
-      username: 'Emily R.',
-      verified: true,
-      tier: 'Elite Member',
-      rating: 5,
-      date: 'Jan 12, 2025',
-      title: 'Absolutely stunning product!',
-      text: `The ${product.name} exceeded all my expectations. The formula is incredible — smooth application, beautiful payoff, and it lasts all day without fading. I've received so many compliments since I started using it.`,
-      helpful: 31,
-      notHelpful: 1,
-      skinType: 'Combination',
-      ageRange: '25-34'
-    },
-    {
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop',
-      username: 'Jessica T.',
-      verified: true,
-      tier: 'VIP',
-      rating: 5,
-      date: 'Jan 8, 2025',
-      title: 'Worth every penny',
-      text: `I'm very picky about my makeup, and the ${product.name} is now a staple in my routine. The quality is unmatched — it blends beautifully and the color payoff is amazing. Will definitely repurchase!`,
-      helpful: 22,
-      notHelpful: 0,
-      skinType: 'Oily',
-      ageRange: '35-44'
-    },
-    {
-      avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&fit=crop',
-      username: 'Lauren M.',
-      verified: false,
-      tier: null,
-      rating: 4,
-      date: 'Jan 3, 2025',
-      title: 'Beautiful quality, love it',
-      text: 'Great product overall. The packaging feels luxurious and the formula performs well. I appreciate the clean ingredients. Giving 4 stars because I wish there were more shade/variety options.',
-      helpful: 15,
-      notHelpful: 2,
-      skinType: 'Dry',
-      ageRange: '25-34'
+  const handleAddToCart = async () => {
+    try {
+      setActionLoading(true);
+      setActionError(null);
+      await CartService.addToCart(product.id, quantity);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to add to cart');
+    } finally {
+      setActionLoading(false);
     }
-  ];
+  };
+
+  const handleBuyNow = async () => {
+    try {
+      setActionLoading(true);
+      setActionError(null);
+      await CartService.addToCart(product.id, quantity);
+      router.push('/Shopping-basket/Delivery-methods');
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to start checkout');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleWishlistToggle = async () => {
+    try {
+      setWishlistLoading(true);
+      const result = await WishlistService.toggleWishlist(product.id);
+      setWishlistAdded(result.added);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to update wishlist');
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      setShareMessage(null);
+      await navigator.clipboard.writeText(window.location.href);
+      setShareMessage('Link copied to clipboard.');
+    } catch {
+      setShareMessage('Unable to copy link.');
+    }
+  };
+
+  const handleReviewAction = () => {
+    setShareMessage('Review submissions are handled in your account dashboard.');
+  };
 
   return (
     <div className="bg-white">
@@ -109,14 +154,14 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
             <div className="w-[580px]">
               <div className="w-[580px] h-[680px] rounded-[8px] overflow-hidden mb-[20px]">
                 <img
-                  src={product.thumbnailImages[selectedThumb] || product.heroImage}
+                  src={thumbnailImages[selectedThumb] || product.hero_image}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
 
               <div className="flex gap-[12px] mb-[32px]">
-                {product.thumbnailImages.map((img, idx) => (
+                {thumbnailImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedThumb(idx)}
@@ -175,38 +220,22 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
 
               <div className="mb-[20px]">
                 <div className="text-[32px] font-semibold text-[#1A1A1A] mb-[4px]">
-                  {product.sizes[selectedSize]?.price || product.price}
+                  {selectedPrice}
                 </div>
                 <div className="text-[14px] font-light text-[#666666]">
-                  or 4 interest-free payments of ${(product.priceNumeric / 4).toFixed(2)}
+                  or 4 interest-free payments of ${(product.price_numeric / 4).toFixed(2)}
                 </div>
               </div>
 
               <p className="text-[16px] font-normal text-[#3D3D3D] leading-[1.6] mb-[32px]">
-                {product.shortDescription}
+                {product.short_description}
               </p>
-
-              {/* Shade Swatches */}
-              {product.shades && (
-                <div className="mb-[24px]">
-                  <div className="text-[14px] font-medium text-[#1A1A1A] mb-[12px]">Available Shades</div>
-                  <div className="flex items-center gap-[8px]">
-                    {product.shades.map((shade, i) => (
-                      <div 
-                        key={i} 
-                        className="w-[28px] h-[28px] rounded-full border-2 border-[#E8E3D9] cursor-pointer hover:border-[#8B7355] transition-colors"
-                        style={{ backgroundColor: shade }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Size Selection */}
               <div className="mb-[24px]">
                 <div className="text-[14px] font-medium text-[#1A1A1A] mb-[12px]">Size</div>
                 <div className="flex gap-[12px]">
-                  {product.sizes.map((option, idx) => (
+                  {(product.sizes || []).map((option, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedSize(idx)}
@@ -251,21 +280,42 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-[16px] mb-[20px]">
-                <button className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-semibold rounded-[8px] flex items-center justify-center gap-[10px] cursor-pointer hover:bg-[#7A6347] transition-colors">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={actionLoading}
+                  className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-semibold rounded-[8px] flex items-center justify-center gap-[10px] cursor-pointer hover:bg-[#7A6347] transition-colors disabled:opacity-60"
+                >
                   <IoBagOutline className="w-[20px] h-[20px]" />
                   Add to Cart
                 </button>
-                <button className="w-full h-[56px] bg-white border-2 border-[#8B7355] text-[#8B7355] text-[16px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors">
+                <button
+                  onClick={handleBuyNow}
+                  disabled={actionLoading}
+                  className="w-full h-[56px] bg-white border-2 border-[#8B7355] text-[#8B7355] text-[16px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors disabled:opacity-60"
+                >
                   Buy Now
                 </button>
               </div>
+              {actionError && (
+                <div className="text-[13px] text-red-600 mb-[20px]">{actionError}</div>
+              )}
+              {shareMessage && (
+                <div className="text-[13px] text-[#8B7355] mb-[20px]">{shareMessage}</div>
+              )}
 
               <div className="flex items-center gap-[32px] mb-[32px]">
-                <button className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors">
+                <button
+                  onClick={handleWishlistToggle}
+                  disabled={wishlistLoading}
+                  className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors disabled:opacity-60"
+                >
                   <IoHeartOutline className="w-[18px] h-[18px]" />
-                  Add to Wishlist
+                  {wishlistAdded ? 'Remove from Wishlist' : 'Add to Wishlist'}
                 </button>
-                <button className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors">
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors"
+                >
                   <IoShareOutline className="w-[18px] h-[18px]" />
                   Share
                 </button>
@@ -275,7 +325,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
               <div className="bg-gradient-to-b from-[#FDFBF7] to-white rounded-[12px] p-[24px]">
                 <h3 className="text-[18px] font-semibold text-[#1A1A1A] mb-[16px]">Key Benefits</h3>
                 <div className="space-y-[12px]">
-                  {product.keyBenefits.map((benefit, idx) => (
+                  {(product.key_benefits || []).map((benefit, idx) => (
                     <div key={idx} className="flex items-start gap-[12px]">
                       <IoCheckmark className="w-[16px] h-[16px] text-[#8B7355] mt-[4px] flex-shrink-0" />
                       <span className="text-[15px] font-normal text-[#2B2B2B]">{benefit}</span>
@@ -310,7 +360,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
             {activeTab === 'Details' && (
               <div>
                 <div className="mb-[40px]">
-                  {product.fullDescription.map((paragraph, idx) => (
+                  {(product.full_description || []).map((paragraph, idx) => (
                     <p key={idx} className="text-[15px] font-normal text-[#3D3D3D] leading-[1.7] mb-[20px]">
                       {paragraph}
                     </p>
@@ -320,7 +370,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
                 <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px]">
                   <h3 className="text-[20px] font-semibold text-[#1A1A1A] mb-[28px]">What Makes It Special</h3>
                   <div className="grid grid-cols-2 gap-[24px]">
-                    {product.specialFeatures.map((feature, idx) => {
+                    {(product.special_features || []).map((feature, idx) => {
                       const IconComponent = featureIcons[idx % featureIcons.length];
                       return (
                         <div key={idx} className="flex gap-[16px]">
@@ -341,7 +391,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
             {activeTab === 'How to Use' && (
               <div>
                 <div className="space-y-[24px] mb-[32px]">
-                  {product.applicationSteps.map((step) => (
+                  {(product.application_steps || []).map((step) => (
                     <div key={step.step} className="flex gap-[24px]">
                       <div className="w-[56px] h-[56px] flex-shrink-0 bg-[#C9A870] rounded-full flex items-center justify-center">
                         <span className="text-[32px] font-semibold text-white">{step.step}</span>
@@ -362,7 +412,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
                     <div>
                       <h4 className="text-[18px] font-medium text-[#1A1A1A] mb-[12px]">Expert Tips</h4>
                       <ul className="space-y-[8px]">
-                        {product.expertTips.map((tip, idx) => (
+                        {(product.expert_tips || []).map((tip, idx) => (
                           <li key={idx} className="text-[14px] font-normal text-[#2B2B2B]">{tip}</li>
                         ))}
                       </ul>
@@ -376,7 +426,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
             {activeTab === 'Ingredients' && (
               <div>
                 <div className="grid grid-cols-2 gap-[24px] mb-[32px]">
-                  {product.keyIngredients.map((ingredient, idx) => (
+                  {(product.key_ingredients || []).map((ingredient, idx) => (
                     <div key={idx} className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[24px]">
                       <div className="flex items-start justify-between mb-[12px]">
                         <div>
@@ -395,7 +445,7 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
                 <div className="bg-[#FDFBF7] rounded-[12px] p-[28px]">
                   <h4 className="text-[16px] font-medium text-[#1A1A1A] mb-[16px]">Full Ingredient List</h4>
                   <p className="text-[15px] font-normal text-[#3D3D3D] leading-[1.7]">
-                    {product.ingredientsList}
+                    {product.ingredients_list}
                   </p>
                 </div>
               </div>
@@ -430,7 +480,10 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
                       ))}
                     </div>
 
-                    <button className="bg-[#8B7355] text-white text-[16px] font-semibold px-[32px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#7A6347] transition-colors">
+                    <button
+                      onClick={handleReviewAction}
+                      className="bg-[#8B7355] text-white text-[16px] font-semibold px-[32px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#7A6347] transition-colors"
+                    >
                       Write a Review
                     </button>
                   </div>
@@ -445,55 +498,15 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
                   ))}
                 </div>
 
-                <div className="space-y-[24px] mb-[32px]">
-                  {reviews.map((review, idx) => (
-                    <div key={idx} className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[24px]">
-                      <div className="flex gap-[16px] mb-[16px]">
-                        <img src={review.avatar} alt={review.username} className="w-[48px] h-[48px] rounded-full object-cover" />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-[8px] mb-[4px]">
-                            <span className="text-[15px] font-medium text-[#1A1A1A]">{review.username}</span>
-                            {review.verified && (
-                              <div className="bg-[#8B7355] text-white text-[10px] font-normal px-[8px] py-[2px] rounded-full">Verified</div>
-                            )}
-                            {review.tier && (
-                              <div className="bg-[#C9A870] text-white text-[10px] font-normal px-[8px] py-[2px] rounded-full">{review.tier}</div>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-[12px]">
-                            <div className="flex gap-[2px]">
-                              {[...Array(5)].map((_, i) => (
-                                <IoStarSharp key={i} className={`w-[16px] h-[16px] ${i < review.rating ? 'text-[#C9A870]' : 'text-[#E8E3D9]'}`} />
-                              ))}
-                            </div>
-                            <span className="text-[13px] font-light text-[#999999]">{review.date}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <h4 className="text-[16px] font-medium text-[#1A1A1A] mb-[8px]">{review.title}</h4>
-                      <p className="text-[15px] font-normal text-[#3D3D3D] leading-[1.6] mb-[16px]">{review.text}</p>
-
-                      <div className="flex items-center justify-between pt-[16px] border-t border-[#F5F1EA]">
-                        <div className="flex gap-[12px]">
-                          <div className="bg-[#F5F1EA] text-[#8B7355] text-[12px] font-normal px-[12px] py-[4px] rounded-full">{review.skinType}</div>
-                          <div className="bg-[#F5F1EA] text-[#8B7355] text-[12px] font-normal px-[12px] py-[4px] rounded-full">{review.ageRange}</div>
-                        </div>
-                        <div className="flex items-center gap-[16px]">
-                          <span className="text-[13px] font-normal text-[#666666]">Was this helpful?</span>
-                          <button className="text-[13px] font-normal text-[#8B7355] cursor-pointer hover:underline">Yes ({review.helpful})</button>
-                          <button className="text-[13px] font-normal text-[#666666] cursor-pointer hover:underline">No ({review.notHelpful})</button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="text-center">
-                  <button className="bg-white border border-[#8B7355] text-[#8B7355] text-[15px] font-medium px-[48px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors">
-                    Load More Reviews
-                  </button>
-                </div>
+                {product.reviews > 0 ? (
+                  <div className="text-[15px] text-[#666666]">
+                    Reviews are available in your account dashboard.
+                  </div>
+                ) : (
+                  <div className="text-[15px] text-[#666666]">
+                    No reviews yet. Be the first to review this product.
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -502,38 +515,46 @@ export default function MakeupProductDetailClient({ product }: MakeupProductDeta
           <div className="mb-[64px]">
             <h3 className="text-[28px] font-semibold text-[#1A1A1A] mb-[32px]">You May Also Love</h3>
             
-            <div className="grid grid-cols-4 gap-[20px]">
-              {relatedProducts.map((relProduct, idx) => (
-                <Link key={idx} href={`/Makeup/${relProduct.slug}`} className="cursor-pointer block group">
-                  <div className="relative mb-[16px]">
-                    <img
-                      src={relProduct.image}
-                      alt={relProduct.name}
-                      className="w-full h-[320px] object-cover rounded-[8px] group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {relProduct.badge && (
-                      <div className="absolute top-[12px] right-[12px] px-[12px] py-[4px] bg-[#C9A870] text-white text-[11px] font-medium rounded-full">
-                        {relProduct.badge}
+            {relatedLoading ? (
+              <div className="text-[15px] text-[#666666]">Loading related products...</div>
+            ) : relatedError ? (
+              <div className="text-[15px] text-red-600">{relatedError}</div>
+            ) : relatedProducts.length === 0 ? (
+              <div className="text-[15px] text-[#666666]">No related products available right now.</div>
+            ) : (
+              <div className="grid grid-cols-4 gap-[20px]">
+                {relatedProducts.map((relProduct, idx) => (
+                  <Link key={idx} href={`/Makeup/${relProduct.slug}`} className="cursor-pointer block group">
+                    <div className="relative mb-[16px]">
+                      <img
+                        src={relProduct.image}
+                        alt={relProduct.name}
+                        className="w-full h-[320px] object-cover rounded-[8px] group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {relProduct.badge && (
+                        <div className="absolute top-[12px] right-[12px] px-[12px] py-[4px] bg-[#C9A870] text-white text-[11px] font-medium rounded-full">
+                          {relProduct.badge}
+                        </div>
+                      )}
+                      <div className="absolute bottom-[12px] right-[12px] w-[40px] h-[40px] bg-[#8B7355] rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-opacity">
+                        <IoBagOutline className="w-[20px] h-[20px] text-white" />
                       </div>
-                    )}
-                    <div className="absolute bottom-[12px] right-[12px] w-[40px] h-[40px] bg-[#8B7355] rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-opacity">
-                      <IoBagOutline className="w-[20px] h-[20px] text-white" />
                     </div>
-                  </div>
-                  <div className="text-[12px] font-light italic text-[#8B7355] mb-[4px]">Shan Loray</div>
-                  <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[4px]">{relProduct.name}</h4>
-                  <div className="flex items-center gap-[6px] mb-[4px]">
-                    <div className="flex gap-[2px]">
-                      {[...Array(5)].map((_, i) => (
-                        <IoStarSharp key={i} className="w-[14px] h-[14px] text-[#C9A870]" />
-                      ))}
+                    <div className="text-[12px] font-light italic text-[#8B7355] mb-[4px]">Shan Loray</div>
+                    <h4 className="text-[15px] font-medium text-[#1A1A1A] mb-[4px]">{relProduct.name}</h4>
+                    <div className="flex items-center gap-[6px] mb-[4px]">
+                      <div className="flex gap-[2px]">
+                        {[...Array(5)].map((_, i) => (
+                          <IoStarSharp key={i} className="w-[14px] h-[14px] text-[#C9A870]" />
+                        ))}
+                      </div>
+                      <span className="text-[13px] font-normal text-[#666666]">({relProduct.reviews})</span>
                     </div>
-                    <span className="text-[13px] font-normal text-[#666666]">({relProduct.reviews})</span>
-                  </div>
-                  <div className="text-[16px] font-semibold text-[#2B2B2B]">{relProduct.price}</div>
-                </Link>
-              ))}
-            </div>
+                    <div className="text-[16px] font-semibold text-[#2B2B2B]">{relProduct.price}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Trust Section */}

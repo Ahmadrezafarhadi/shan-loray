@@ -2,7 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Product, products } from '../data/products';
+import { useRouter } from 'next/navigation';
+import { Product } from '@/lib/api/config';
+import { CartService, WishlistService } from '@/lib/api';
+import { ProductService } from '@/lib/api/products';
+import Loading from '@/components/ui/Loading';
+import ErrorMessage from '@/components/ui/ErrorMessage';
 import { 
   IoHeartOutline,
   IoBagOutline,
@@ -25,60 +30,105 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+  const router = useRouter();
   const [selectedSize, setSelectedSize] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedThumb, setSelectedThumb] = useState(0);
   const [activeTab, setActiveTab] = useState('Details');
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [relatedLoading, setRelatedLoading] = useState(true);
+  const [relatedError, setRelatedError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [wishlistAdded, setWishlistAdded] = useState(false);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
-  // محصولات مرتبط (بجز محصول فعلی)
-  const relatedProducts = products
-    .filter(p => p.slug !== product.slug)
-    .slice(0, 4);
+  React.useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        setRelatedLoading(true);
+        setRelatedError(null);
+        // Fetch products from the same collection or category
+        const response = await ProductService.getProducts({
+          collection: product.collection
+        });
+        // Filter out current product
+        const filtered = response.data.filter(p => p.id !== product.id);
+        setRelatedProducts(filtered);
+      } catch (err) {
+        setRelatedError(err instanceof Error ? err.message : 'Failed to fetch related products');
+      } finally {
+        setRelatedLoading(false);
+      }
+    };
 
-  const reviews = [
-    {
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop',
-      username: 'Jennifer M.',
-      verified: true,
-      tier: 'Elite Member',
-      rating: 5,
-      date: 'Dec 18, 2024',
-      title: 'Absolutely love this product!',
-      text: `I have been using the ${product.name} for about 3 weeks now, and the results are incredible. My skin feels so much smoother and more radiant. The texture is luxurious without being heavy, and it absorbs beautifully. Worth every penny!`,
-      helpful: 24,
-      notHelpful: 2,
-      skinType: 'Dry',
-      ageRange: '35-44'
-    },
-    {
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop',
-      username: 'Sarah K.',
-      verified: true,
-      tier: 'VIP',
-      rating: 5,
-      date: 'Dec 15, 2024',
-      title: 'Best investment in my skincare routine',
-      text: `The ${product.name} has completely transformed my skin. I noticed results within the first week. My skin looks more radiant and feels firmer. The bottle lasts longer than expected, and a little goes a long way.`,
-      helpful: 18,
-      notHelpful: 1,
-      skinType: 'Combination',
-      ageRange: '45-54'
-    },
-    {
-      avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&fit=crop',
-      username: 'Michelle L.',
-      verified: false,
-      tier: null,
-      rating: 4,
-      date: 'Dec 10, 2024',
-      title: 'Excellent quality, highly recommend',
-      text: 'The quality is undeniable, and I can see improvements in my skin texture and firmness. Will definitely repurchase.',
-      helpful: 12,
-      notHelpful: 0,
-      skinType: 'Normal',
-      ageRange: '25-34'
+    fetchRelatedProducts();
+  }, [product.id, product.collection]);
+
+  React.useEffect(() => {
+    const checkWishlist = async () => {
+      try {
+        const inWishlist = await WishlistService.checkWishlist(product.id);
+        setWishlistAdded(inWishlist);
+      } catch {
+        setWishlistAdded(false);
+      }
+    };
+
+    checkWishlist();
+  }, [product.id]);
+
+  const handleAddToCart = async () => {
+    try {
+      setActionLoading(true);
+      setActionError(null);
+      await CartService.addToCart(product.id, quantity);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to add to cart');
+    } finally {
+      setActionLoading(false);
     }
-  ];
+  };
+
+  const handleBuyNow = async () => {
+    try {
+      setActionLoading(true);
+      setActionError(null);
+      await CartService.addToCart(product.id, quantity);
+      router.push('/Shopping-basket/Delivery-methods');
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to start checkout');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleWishlistToggle = async () => {
+    try {
+      setWishlistLoading(true);
+      const result = await WishlistService.toggleWishlist(product.id);
+      setWishlistAdded(result.added);
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Unable to update wishlist');
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      setShareMessage(null);
+      await navigator.clipboard.writeText(window.location.href);
+      setShareMessage('Link copied to clipboard.');
+    } catch {
+      setShareMessage('Unable to copy link.');
+    }
+  };
+
+  const handleReviewAction = () => {
+    setShareMessage('Review submissions are handled in your account dashboard.');
+  };
 
   const featureIcons = [IoSparkles, IoLeafOutline, IoSyncOutline, IoShieldCheckmarkOutline];
 
@@ -98,26 +148,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       </div>
 
       {/* Main Content Area */}
-      <div className="px-[120px] pb-[64px]">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-[120px] pb-8 sm:pb-[64px]">
         <div className="max-w-[1200px] mx-auto">
           {/* Product Section */}
-          <div className="flex gap-[40px] mb-[64px]">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-[40px] mb-8 sm:mb-[64px]">
             {/* Left Column - Product Gallery */}
-            <div className="w-[580px]">
-              <div className="w-[580px] h-[680px] rounded-[8px] overflow-hidden mb-[20px]">
+            <div className="w-full lg:w-[580px]">
+              <div className="w-full lg:w-[580px] h-[400px] sm:h-[500px] lg:h-[680px] rounded-[8px] overflow-hidden mb-4 sm:mb-[20px]">
                 <img
-                  src={product.thumbnailImages[selectedThumb] || product.heroImage}
+                  src={product.thumbnail_images[selectedThumb] || product.hero_image}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
 
-              <div className="flex gap-[12px] mb-[32px]">
-                {product.thumbnailImages.map((img, idx) => (
+              <div className="flex gap-2 sm:gap-[12px] mb-6 sm:mb-[32px] overflow-x-auto pb-2">
+                {product.thumbnail_images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedThumb(idx)}
-                    className={`w-[106px] h-[106px] rounded-[8px] overflow-hidden cursor-pointer ${
+                    className={`w-[80px] h-[80px] sm:w-[106px] sm:h-[106px] rounded-[8px] overflow-hidden cursor-pointer flex-shrink-0 ${
                       idx === selectedThumb ? 'border-2 border-[#8B7355]' : 'border-2 border-transparent hover:border-[#E8E3D9]'
                     }`}
                   >
@@ -142,7 +192,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </div>
 
             {/* Right Column */}
-            <div className="w-[580px]">
+            <div className="w-full lg:w-[580px]">
               <div className="mb-[8px]">
                 <span className="text-[14px] font-light italic text-[#8B7355]">Shan Loray</span>
                 <span className="text-[12px] font-light text-[#999999] ml-[8px]">{product.collection}</span>
@@ -169,12 +219,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   {product.sizes[selectedSize]?.price || product.price}
                 </div>
                 <div className="text-[14px] font-light text-[#666666]">
-                  or 4 interest-free payments of ${(product.priceNumeric / 4).toFixed(2)}
+                  or 4 interest-free payments of ${(product.price_numeric / 4).toFixed(2)}
                 </div>
               </div>
 
               <p className="text-[16px] font-normal text-[#3D3D3D] leading-[1.6] mb-[32px]">
-                {product.shortDescription}
+                {product.short_description}
               </p>
 
               {/* Size Selection */}
@@ -226,33 +276,54 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-[16px] mb-[20px]">
-                <button className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-semibold rounded-[8px] flex items-center justify-center gap-[10px] cursor-pointer hover:bg-[#7A6347] transition-colors">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={actionLoading}
+                  className="w-full h-[56px] bg-[#8B7355] text-white text-[16px] font-semibold rounded-[8px] flex items-center justify-center gap-[10px] cursor-pointer hover:bg-[#7A6347] transition-colors disabled:opacity-60"
+                >
                   <IoBagOutline className="w-[20px] h-[20px]" />
                   Add to Cart
                 </button>
-                <button className="w-full h-[56px] bg-white border-2 border-[#8B7355] text-[#8B7355] text-[16px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors">
+                <button
+                  onClick={handleBuyNow}
+                  disabled={actionLoading}
+                  className="w-full h-[56px] bg-white border-2 border-[#8B7355] text-[#8B7355] text-[16px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors disabled:opacity-60"
+                >
                   Buy Now
                 </button>
               </div>
+              {actionError && (
+                <div className="text-[13px] text-red-600 mb-[20px]">{actionError}</div>
+              )}
+              {shareMessage && (
+                <div className="text-[13px] text-[#8B7355] mb-[20px]">{shareMessage}</div>
+              )}
 
               <div className="flex items-center gap-[32px] mb-[32px]">
-                <button className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors">
+                <button
+                  onClick={handleWishlistToggle}
+                  disabled={wishlistLoading}
+                  className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors disabled:opacity-60"
+                >
                   <IoHeartOutline className="w-[18px] h-[18px]" />
-                  Add to Wishlist
+                  {wishlistAdded ? 'Remove from Wishlist' : 'Add to Wishlist'}
                 </button>
-                <button className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors">
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-[8px] text-[15px] font-normal text-[#666666] cursor-pointer hover:text-[#8B7355] transition-colors"
+                >
                   <IoShareOutline className="w-[18px] h-[18px]" />
                   Share
                 </button>
               </div>
 
               {/* Key Benefits */}
-              <div className="bg-gradient-to-b from-[#FDFBF7] to-white rounded-[12px] p-[24px]">
+              <div className="bg-linear-to-b from-[#FDFBF7] to-white rounded-[12px] p-[24px]">
                 <h3 className="text-[18px] font-semibold text-[#1A1A1A] mb-[16px]">Key Benefits</h3>
                 <div className="space-y-[12px]">
-                  {product.keyBenefits.map((benefit, idx) => (
+                  {product.key_benefits.map((benefit, idx) => (
                     <div key={idx} className="flex items-start gap-[12px]">
-                      <IoCheckmark className="w-[16px] h-[16px] text-[#8B7355] mt-[4px] flex-shrink-0" />
+                      <IoCheckmark className="w-[16px] h-[16px] text-[#8B7355] mt-[4px] shrink-0" />
                       <span className="text-[15px] font-normal text-[#2B2B2B]">{benefit}</span>
                     </div>
                   ))}
@@ -285,7 +356,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {activeTab === 'Details' && (
               <div>
                 <div className="mb-[40px]">
-                  {product.fullDescription.map((paragraph, idx) => (
+                  {product.full_description.map((paragraph, idx) => (
                     <p key={idx} className="text-[15px] font-normal text-[#3D3D3D] leading-[1.7] mb-[20px]">
                       {paragraph}
                     </p>
@@ -295,7 +366,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <div className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[32px]">
                   <h3 className="text-[20px] font-semibold text-[#1A1A1A] mb-[28px]">What Makes It Special</h3>
                   <div className="grid grid-cols-2 gap-[24px]">
-                    {product.specialFeatures.map((feature, idx) => {
+                    {product.special_features.map((feature, idx) => {
                       const IconComponent = featureIcons[idx % featureIcons.length];
                       return (
                         <div key={idx} className="flex gap-[16px]">
@@ -316,7 +387,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {activeTab === 'How to Use' && (
               <div>
                 <div className="space-y-[24px] mb-[32px]">
-                  {product.applicationSteps.map((step) => (
+                  {product.application_steps.map((step) => (
                     <div key={step.step} className="flex gap-[24px]">
                       <div className="w-[56px] h-[56px] flex-shrink-0 bg-[#C9A870] rounded-full flex items-center justify-center">
                         <span className="text-[32px] font-semibold text-white">{step.step}</span>
@@ -337,7 +408,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <div>
                       <h4 className="text-[18px] font-medium text-[#1A1A1A] mb-[12px]">Expert Tips</h4>
                       <ul className="space-y-[8px]">
-                        {product.expertTips.map((tip, idx) => (
+                        {product.expert_tips.map((tip, idx) => (
                           <li key={idx} className="text-[14px] font-normal text-[#2B2B2B]">{tip}</li>
                         ))}
                       </ul>
@@ -351,7 +422,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {activeTab === 'Ingredients' && (
               <div>
                 <div className="grid grid-cols-2 gap-[24px] mb-[32px]">
-                  {product.keyIngredients.map((ingredient, idx) => (
+                  {product.key_ingredients.map((ingredient, idx) => (
                     <div key={idx} className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[24px]">
                       <div className="flex items-start justify-between mb-[12px]">
                         <div>
@@ -370,7 +441,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <div className="bg-[#FDFBF7] rounded-[12px] p-[28px]">
                   <h4 className="text-[16px] font-medium text-[#1A1A1A] mb-[16px]">Full Ingredient List</h4>
                   <p className="text-[15px] font-normal text-[#3D3D3D] leading-[1.7]">
-                    {product.ingredientsList}
+                    {product.ingredients_list}
                   </p>
                 </div>
               </div>
@@ -380,7 +451,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {activeTab === 'Reviews' && (
               <div>
                 {/* Rating Summary */}
-                <div className="bg-gradient-to-br from-[#FDFBF7] to-[#F5F1EA] rounded-[12px] p-[40px] mb-[40px]">
+                <div className="bg-linear-to-br from-[#FDFBF7] to-[#F5F1EA] rounded-[12px] p-[40px] mb-[40px]">
                   <div className="flex items-start gap-[48px]">
                     <div className="text-center">
                       <div className="text-[48px] font-semibold text-[#1A1A1A] mb-[8px]">{product.rating}.0</div>
@@ -406,7 +477,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       ))}
                     </div>
 
-                    <button className="bg-[#8B7355] text-white text-[16px] font-semibold px-[32px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#7A6347] transition-colors">
+                    <button
+                      onClick={handleReviewAction}
+                      className="bg-[#8B7355] text-white text-[16px] font-semibold px-[32px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#7A6347] transition-colors"
+                    >
                       Write a Review
                     </button>
                   </div>
@@ -422,56 +496,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   ))}
                 </div>
 
-                {/* Individual Reviews */}
-                <div className="space-y-[24px] mb-[32px]">
-                  {reviews.map((review, idx) => (
-                    <div key={idx} className="bg-white rounded-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] p-[24px]">
-                      <div className="flex gap-[16px] mb-[16px]">
-                        <img src={review.avatar} alt={review.username} className="w-[48px] h-[48px] rounded-full object-cover" />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-[8px] mb-[4px]">
-                            <span className="text-[15px] font-medium text-[#1A1A1A]">{review.username}</span>
-                            {review.verified && (
-                              <div className="bg-[#8B7355] text-white text-[10px] font-normal px-[8px] py-[2px] rounded-full">Verified</div>
-                            )}
-                            {review.tier && (
-                              <div className="bg-[#C9A870] text-white text-[10px] font-normal px-[8px] py-[2px] rounded-full">{review.tier}</div>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-[12px]">
-                            <div className="flex gap-[2px]">
-                              {[...Array(5)].map((_, i) => (
-                                <IoStarSharp key={i} className={`w-[16px] h-[16px] ${i < review.rating ? 'text-[#C9A870]' : 'text-[#E8E3D9]'}`} />
-                              ))}
-                            </div>
-                            <span className="text-[13px] font-light text-[#999999]">{review.date}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <h4 className="text-[16px] font-medium text-[#1A1A1A] mb-[8px]">{review.title}</h4>
-                      <p className="text-[15px] font-normal text-[#3D3D3D] leading-[1.6] mb-[16px]">{review.text}</p>
-
-                      <div className="flex items-center justify-between pt-[16px] border-t border-[#F5F1EA]">
-                        <div className="flex gap-[12px]">
-                          <div className="bg-[#F5F1EA] text-[#8B7355] text-[12px] font-normal px-[12px] py-[4px] rounded-full">{review.skinType}</div>
-                          <div className="bg-[#F5F1EA] text-[#8B7355] text-[12px] font-normal px-[12px] py-[4px] rounded-full">{review.ageRange}</div>
-                        </div>
-                        <div className="flex items-center gap-[16px]">
-                          <span className="text-[13px] font-normal text-[#666666]">Was this helpful?</span>
-                          <button className="text-[13px] font-normal text-[#8B7355] cursor-pointer hover:underline">Yes ({review.helpful})</button>
-                          <button className="text-[13px] font-normal text-[#666666] cursor-pointer hover:underline">No ({review.notHelpful})</button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="text-center">
-                  <button className="bg-white border border-[#8B7355] text-[#8B7355] text-[15px] font-medium px-[48px] h-[48px] rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors">
-                    Load More Reviews
-                  </button>
-                </div>
+                {product.reviews > 0 ? (
+                  <div className="text-[15px] text-[#666666]">
+                    Reviews are available in your account dashboard.
+                  </div>
+                ) : (
+                  <div className="text-[15px] text-[#666666]">
+                    No reviews yet. Be the first to review this product.
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -479,9 +512,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* Related Products */}
           <div className="mb-[64px]">
             <h3 className="text-[28px] font-semibold text-[#1A1A1A] mb-[32px]">Complete Your Routine</h3>
-            
-            <div className="grid grid-cols-4 gap-[20px]">
-              {relatedProducts.map((relProduct, idx) => (
+
+            {relatedLoading ? (
+              <div className="flex justify-center py-10">
+                <Loading text="Loading related products..." />
+              </div>
+            ) : relatedError ? (
+              <ErrorMessage message={relatedError} />
+            ) : (
+              <div className="grid grid-cols-4 gap-[20px]">
+                {relatedProducts.map((relProduct, idx) => (
                 <Link key={idx} href={`/Skincare/${relProduct.slug}`} className="cursor-pointer block group">
                   <div className="relative mb-[16px]">
                     <img
@@ -503,10 +543,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     </div>
                     <span className="text-[13px] font-normal text-[#666666]">({relProduct.reviews})</span>
                   </div>
-                  <div className="text-[16px] font-semibold text-[#2B2B2B]">{relProduct.price}</div>
+                  <div className="text-[16px] font-semibold text-[#2B2B2B]">${relProduct.price}</div>
                 </Link>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Trust Section */}

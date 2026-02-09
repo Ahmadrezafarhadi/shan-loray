@@ -12,7 +12,7 @@ export default function AdvancedFormulationsPage() {
     {
       name: 'Marine Collagen Complex',
       origin: 'Deep Sea Extract',
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=360&h=400&fit=crop',
+      image: '/images/remote/184e25764970.jpg',
       benefits: ['Boosts elasticity', 'Reduces wrinkles', 'Hydrates deeply'],
       concentration: '5%',
       efficacy: '87% visible improvement in 8 weeks'
@@ -20,7 +20,7 @@ export default function AdvancedFormulationsPage() {
     {
       name: 'Bio-Retinol Complex',
       origin: 'Plant-Derived Alternative',
-      image: 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=360&h=400&fit=crop',
+      image: '/images/remote/14c942514540.jpg',
       benefits: ['Cell renewal', 'Smooths texture', 'Brightens skin'],
       concentration: '3%',
       efficacy: '92% reduction in fine lines after 12 weeks'
@@ -28,7 +28,7 @@ export default function AdvancedFormulationsPage() {
     {
       name: 'Peptide Matrix Pro',
       origin: 'Advanced Biotechnology',
-      image: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=360&h=400&fit=crop',
+      image: '/images/remote/65dc7de1d682.jpg',
       benefits: ['Firms skin', 'Repairs barrier', 'Anti-aging'],
       concentration: '4%',
       efficacy: '95% improvement in firmness'
@@ -36,7 +36,7 @@ export default function AdvancedFormulationsPage() {
     {
       name: 'Botanical Stem Cells',
       origin: 'Swiss Alpine Roses',
-      image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=360&h=400&fit=crop',
+      image: '/images/remote/e8d912f59748.jpg',
       benefits: ['Protects cells', 'Longevity boost', 'Antioxidant'],
       concentration: '2%',
       efficacy: '89% enhanced skin vitality'
@@ -44,10 +44,10 @@ export default function AdvancedFormulationsPage() {
   ];
 
   const clinicalResults = [
-    { metric: 'Hydration', improvement: '+67%', timeline: '4 weeks', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=280&h=220&fit=crop' },
-    { metric: 'Fine Lines', improvement: '-52%', timeline: '8 weeks', image: 'https://images.unsplash.com/photo-1611349411198-e26e0d5f4a52?w=280&h=220&fit=crop' },
-    { metric: 'Elasticity', improvement: '+73%', timeline: '12 weeks', image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=280&h=220&fit=crop' },
-    { metric: 'Radiance', improvement: '+81%', timeline: '6 weeks', image: 'https://images.unsplash.com/photo-1556740772-1a741367b93e?w=280&h=220&fit=crop' }
+    { metric: 'Hydration', improvement: '+67%', timeline: '4 weeks', image: '/images/remote/c1634a58430e.jpg' },
+    { metric: 'Fine Lines', improvement: '-52%', timeline: '8 weeks', image: '/images/remote/0f45472cee89.jpg' },
+    { metric: 'Elasticity', improvement: '+73%', timeline: '12 weeks', image: '/images/remote/8fade731ab7b.jpg' },
+    { metric: 'Radiance', improvement: '+81%', timeline: '6 weeks', image: '/images/remote/cc2748c504fc.jpg' }
   ];
 
   const certifications = [
@@ -84,19 +84,19 @@ export default function AdvancedFormulationsPage() {
     {
       name: 'Dr. Elena Martinez',
       title: 'Chief Scientific Officer',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop',
+      image: '/images/remote/a08ad1126151.jpg',
       quote: 'Our formulations represent the pinnacle of skincare science, combining nature\'s wisdom with cutting-edge biotechnology.'
     },
     {
       name: 'Dr. James Chen',
       title: 'Lead Formulation Chemist',
-      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop',
+      image: '/images/remote/7af1b925026c.jpg',
       quote: 'Every ingredient is selected for its proven efficacy and synergistic potential within our advanced delivery systems.'
     },
     {
       name: 'Dr. Sophie Dubois',
       title: 'Clinical Research Director',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop',
+      image: '/images/remote/8d491f7f18fc.jpg',
       quote: 'Our rigorous clinical trials ensure that every product delivers measurable, visible results for our clients.'
     }
   ];
@@ -104,19 +104,19 @@ export default function AdvancedFormulationsPage() {
   const heroProducts = [
     {
       name: 'Age-Defying Serum',
-      image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=300&h=360&fit=crop',
+      image: '/images/remote/f9f410b2789b.jpg',
       keyActives: 'Peptide Matrix 4%, Bio-Retinol 3%',
       technology: 'Micro-Encapsulation System'
     },
     {
       name: 'Collagen Renewal Cream',
-      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=360&fit=crop',
+      image: '/images/remote/53527ed69568.jpg',
       keyActives: 'Marine Collagen 5%, Hyaluronic Acid 2%',
       technology: 'Triple-Layer Delivery'
     },
     {
       name: 'Radiance Brightening Essence',
-      image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=300&h=360&fit=crop',
+      image: '/images/remote/7f74a9f03fb4.jpg',
       keyActives: 'Vitamin C 15%, Niacinamide 5%',
       technology: 'Liposomal Encapsulation'
     }
@@ -154,17 +154,17 @@ export default function AdvancedFormulationsPage() {
     {
       title: 'Virtual Try-On',
       desc: 'Experience products with AR technology',
-      image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=380&h=280&fit=crop'
+      image: '/images/remote/3ea6e6ef38d6.jpg'
     },
     {
       title: 'Skin Analysis',
       desc: 'AI-powered skin assessment tool',
-      image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=380&h=280&fit=crop'
+      image: '/images/remote/b787dce2715d.jpg'
     },
     {
       title: 'Beauty Journey',
       desc: 'Track your personalized skincare progress',
-      image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=380&h=280&fit=crop'
+      image: '/images/remote/0e4cb6c5bc11.jpg'
     }
   ];
 
@@ -181,7 +181,7 @@ export default function AdvancedFormulationsPage() {
 
         <div className="absolute right-[140px] top-1/2 transform -translate-y-1/2">
           <img 
-            src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=440&h=440&fit=crop" 
+            src="/images/remote/8b19846dea3a.jpg" 
             alt="Laboratory Science"
             className="w-[440px] h-[440px] object-cover rounded-[12px] shadow-[0_16px_64px_rgba(0,0,0,0.15)]"
           />
@@ -251,7 +251,7 @@ export default function AdvancedFormulationsPage() {
         <div className="flex gap-[64px] items-center">
           <div className="w-[580px]">
             <img 
-              src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=580&h=420&fit=crop"
+              src="/images/remote/7010c9a2f768.jpg"
               alt="Formulation Technology"
               className="w-full h-[420px] object-cover rounded-[12px] shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
             />
@@ -302,7 +302,7 @@ export default function AdvancedFormulationsPage() {
       {/* Research & Development Banner */}
       <div className="min-h-[360px] relative overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1440&h=360&fit=crop"
+          src="/images/remote/46d0d2d66a30.jpg"
           alt="Research Laboratory"
           className="w-full h-[360px] object-cover"
         />
@@ -347,7 +347,7 @@ export default function AdvancedFormulationsPage() {
         <div className="flex gap-[48px]">
           <div className="w-[600px]">
             <img 
-              src="https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=600&h=400&fit=crop"
+              src="/images/remote/e9ecdbb6aaef.jpg"
               alt="Global Sourcing"
               className="w-full h-[400px] object-cover rounded-[12px] shadow-[0_8px_32px_rgba(0,0,0,0.1)] mb-4"
             />
@@ -552,3 +552,7 @@ export default function AdvancedFormulationsPage() {
     </div>
   );
 }
+
+
+
+

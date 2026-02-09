@@ -2,10 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { 
-  IoSearchOutline, 
-  IoPersonOutline, 
-  IoHeartOutline, 
+import {
+  IoSearchOutline,
+  IoPersonOutline,
+  IoHeartOutline,
   IoBagOutline,
   IoSparkles,
   IoBagCheckOutline,
@@ -14,13 +14,29 @@ import {
   IoDocumentTextOutline,
   IoRibbonOutline,
   IoCalendarOutline,
-  IoLogOutOutline
+  IoLogOutOutline,
+  IoMenu,
+  IoClose
 } from 'react-icons/io5';
 import SearchPopup from "./SearchPopUp";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import AuthModal from "@/components/auth/AuthModal";
+import { IconType } from 'react-icons';
+
+type DropdownMenuItem = {
+  icon: IconType;
+  label: string;
+} & (
+  | { href: string; hasArrow?: boolean; badge?: string; badgeColor?: string; action?: never }
+  | { action: () => void; hasArrow?: boolean; href?: never; badge?: never; badgeColor?: never }
+);
 
 export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // ← state جدید
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const menuItems = [
@@ -34,18 +50,28 @@ export default function Navbar() {
 
   const quickActions = [
     { icon: IoBagCheckOutline, label: 'Orders', href: '/Orders' },
-    { icon: IoHeartOutline, label: 'Wishlist', href: '/Wishlist' },
+    { icon: IoHeartOutline, label: 'Wishlist', href: '/Dashboard/Wishlist' },
     { icon: IoCameraOutline, label: 'Profile', href: '/Profile' }
   ];
 
-  const dropdownMenuItems = [
-    { icon: IoPersonOutline, label: 'Account Dashboard', hasArrow: true, href: '/Dashboard' },
-    { icon: IoDocumentTextOutline, label: 'Order History', hasArrow: true, href: '/Orders' },
-    { icon: IoHeartOutline, label: 'My Wishlist', badge: '12 items', href: '/Wishlist' },
-    { icon: IoSparkles, label: 'Beauty Profile', hasArrow: true, href: '/Beauty-profile' },
-    { icon: IoRibbonOutline, label: 'Loyalty Program', badge: '2,450 pts', badgeColor: 'bg-[#8B7355]', href: '/Loyalty' },
-    { icon: IoCalendarOutline, label: 'My Routines', hasArrow: true, href: '/Routines' }
-  ];
+  const getDropdownMenuItems = (): DropdownMenuItem[] => {
+    if (!isAuthenticated) {
+      return [
+        { icon: IoPersonOutline, label: 'Sign In', hasArrow: false, href: '/auth/signin' },
+        { icon: IoPersonOutline, label: 'Create Account', hasArrow: false, href: '/auth/signup' }
+      ];
+    }
+
+    return [
+      { icon: IoPersonOutline, label: 'Account Dashboard', hasArrow: true, href: '/Dashboard' },
+      { icon: IoDocumentTextOutline, label: 'Order History', hasArrow: true, href: '/Dashboard/Track-orders' },
+      { icon: IoHeartOutline, label: 'My Wishlist', hasArrow: true, href: '/Dashboard/Wishlist' },
+      { icon: IoSparkles, label: 'Beauty Profile', hasArrow: true, href: '/Beauty-profile' },
+      { icon: IoRibbonOutline, label: 'Loyalty Program', badge: '2,450 pts', badgeColor: 'bg-[#8B7355]', href: '/Loyalty' },
+      { icon: IoCalendarOutline, label: 'My Routines', hasArrow: true, href: '/Routines' },
+      { icon: IoLogOutOutline, label: 'Sign Out', hasArrow: false, action: logout }
+    ];
+  };
 
   // بستن dropdown وقتی خارج از آن کلیک می‌شود
   useEffect(() => {
@@ -66,7 +92,8 @@ export default function Navbar() {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsDropdownOpen(false);
-        setIsSearchOpen(false); // ← بستن سرچ با Escape
+        setIsSearchOpen(false);
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -90,18 +117,18 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="min-h-[80px] bg-white/95 backdrop-blur-sm border-b border-[#E8E3D9] flex items-center justify-between px-[120px] sticky top-0 z-50">
+      <header className="min-h-[80px] bg-white/95 backdrop-blur-sm border-b border-[#E8E3D9] flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-[120px] sticky top-0 z-50">
         {/* Logo */}
         <div className="font-semibold text-[32px] text-[#1A1A1A] tracking-[3px]">
           <Link href="/">SHAN LORAY</Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-[48px]">
+        <nav className="hidden lg:flex items-center gap-[48px]">
           {menuItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.href} 
+            <Link
+              key={item.name}
+              href={item.href}
               className={`text-[16px] font-normal cursor-pointer transition-colors hover:text-[#8B7355] ${
                 item.name === 'Collections' ? 'text-[#8B7355] font-medium' : 'text-[#3D3D3D]'
               }`}
@@ -112,10 +139,23 @@ export default function Navbar() {
         </nav>
 
         {/* Icons */}
-        <div className="flex items-center gap-[28px]">
-          <span className="text-[14px] font-light text-[#3D3D3D]">EN / RU</span>
-          <div className="w-[1px] h-4 bg-[#E8E3D9]" />
-          
+        <div className="flex items-center gap-4 sm:gap-[28px]">
+          <span className="hidden sm:inline text-[14px] font-light text-[#3D3D3D]">EN / RU</span>
+          <div className="hidden sm:block w-[1px] h-4 bg-[#E8E3D9]" />
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden focus:outline-none"
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? (
+              <IoClose className="w-6 h-6 text-[#2B2B2B] cursor-pointer" />
+            ) : (
+              <IoMenu className="w-6 h-6 text-[#2B2B2B] cursor-pointer" />
+            )}
+          </button>
+
           {/* ← آیکون سرچ با onClick */}
           <button
             onClick={() => setIsSearchOpen(true)}
@@ -153,7 +193,7 @@ export default function Navbar() {
                   <div className="min-h-[140px] bg-gradient-to-b from-[#FDFBF7] to-white px-[28px] pt-[32px] pb-[28px] rounded-t-[12px] relative">
                     <div className="flex items-start gap-[16px]">
                       <img
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop"
+                        src="/images/remote/7a29aadf789d.jpg"
                         alt="User Avatar"
                         className="w-[80px] h-[80px] rounded-full object-cover border-[3px] border-[#C9A870] shadow-[0_4px_12px_rgba(139,115,85,0.2)]"
                       />
@@ -194,28 +234,51 @@ export default function Navbar() {
 
                   {/* Main Menu Items */}
                   <div className="px-[16px] py-[8px] bg-white">
-                    {dropdownMenuItems.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={() => setIsDropdownOpen(false)}
-                        className="flex items-center justify-between h-[56px] px-[20px] rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors"
-                      >
-                        <div className="flex items-center gap-[16px]">
-                          <item.icon className="w-[22px] h-[22px] text-[#8B7355]" />
-                          <span className="text-[16px] font-normal text-[#2B2B2B]">
-                            {item.label}
-                          </span>
-                        </div>
-                        
-                        {item.badge ? (
-                          <div className={`${item.badgeColor || 'bg-[#C9A870]'} text-white text-[12px] font-normal px-[10px] py-[4px] rounded-[12px]`}>
-                            {item.badge}
+                    {getDropdownMenuItems().map((item) => (
+                      item.href ? (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="flex items-center justify-between h-[56px] px-[20px] rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors"
+                        >
+                          <div className="flex items-center gap-[16px]">
+                            <item.icon className="w-[22px] h-[22px] text-[#8B7355]" />
+                            <span className="text-[16px] font-normal text-[#2B2B2B]">
+                              {item.label}
+                            </span>
                           </div>
-                        ) : item.hasArrow ? (
-                          <IoChevronForward className="w-[18px] h-[18px] text-[#999999]" />
-                        ) : null}
-                      </Link>
+
+                          {item.badge ? (
+                            <div className={`${item.badgeColor || 'bg-[#C9A870]'} text-white text-[12px] font-normal px-[10px] py-[4px] rounded-[12px]`}>
+                              {item.badge}
+                            </div>
+                          ) : item.hasArrow ? (
+                            <IoChevronForward className="w-[18px] h-[18px] text-[#999999]" />
+                          ) : null}
+                        </Link>
+                      ) : (
+                        <button
+                          key={item.label}
+                          onClick={item.action}
+                          className="flex items-center justify-between w-full h-[56px] px-[20px] rounded-[8px] cursor-pointer hover:bg-[#FDFBF7] transition-colors"
+                        >
+                          <div className="flex items-center gap-[16px]">
+                            <item.icon className="w-[22px] h-[22px] text-[#8B7355]" />
+                            <span className="text-[16px] font-normal text-[#2B2B2B]">
+                              {item.label}
+                            </span>
+                          </div>
+
+                          {item.badge ? (
+                            <div className={`${item.badgeColor || 'bg-[#C9A870]'} text-white text-[12px] font-normal px-[10px] py-[4px] rounded-[12px]`}>
+                              {item.badge}
+                            </div>
+                          ) : item.hasArrow ? (
+                            <IoChevronForward className="w-[18px] h-[18px] text-[#999999]" />
+                          ) : null}
+                        </button>
+                      )
                     ))}
                   </div>
 
@@ -240,17 +303,62 @@ export default function Navbar() {
             )}
           </div>
           
-          <IoHeartOutline className="w-6 h-6 text-[#2B2B2B] cursor-pointer hover:text-[#8B7355] transition-colors" />
+          <Link href="/Dashboard/Wishlist">
+            <IoHeartOutline className="w-6 h-6 text-[#2B2B2B] cursor-pointer hover:text-[#8B7355] transition-colors" />
+          </Link>
           <Link href="/Shopping-basket">
             <IoBagOutline className="w-6 h-6 text-[#2B2B2B] cursor-pointer hover:text-[#8B7355] transition-colors" />
           </Link>
         </div>
       </header>
 
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="absolute top-[80px] left-0 right-0 bg-white border-b border-[#E8E3D9] shadow-lg z-50 lg:hidden">
+            <div className="px-4 py-6 space-y-4">
+              {menuItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block text-[16px] font-normal cursor-pointer transition-colors hover:text-[#8B7355] ${
+                    item.name === 'Collections' ? 'text-[#8B7355] font-medium' : 'text-[#3D3D3D]'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <div className="pt-4 border-t border-[#E8E3D9]">
+                <span className="text-[14px] font-light text-[#3D3D3D]">EN / RU</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* ← Search Popup */}
       {isSearchOpen && (
         <SearchPopup onClose={() => setIsSearchOpen(false)} />
       )}
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={(user) => {
+          console.log('User authenticated:', user);
+        }}
+      />
     </>
   );
 }
+
+
+
+
+

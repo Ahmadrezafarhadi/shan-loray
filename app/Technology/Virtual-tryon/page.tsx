@@ -25,31 +25,31 @@ export default function VirtualTryOnPage() {
   const categoryTabs = ['Lips', 'Eyes', 'Face', 'Cheeks', 'Brows'];
   
   const productsData = [
-    { image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Velvet Matte Lipstick', shade: 'Ruby Rose', price: '$48', rating: 5, reviews: 342 },
-    { image: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Silk Eyeshadow Palette', shade: 'Golden Hour', price: '$89', rating: 5, reviews: 521 },
-    { image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Luminous Foundation', shade: 'Warm Ivory', price: '$68', rating: 5, reviews: 467 },
-    { image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Cream Blush', shade: 'Dusty Rose', price: '$42', rating: 5, reviews: 298 },
-    { image: 'https://images.unsplash.com/photo-1596704017254-9b121068e505?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Glossy Lip Lacquer', shade: 'Berry Shimmer', price: '$38', rating: 5, reviews: 412 },
-    { image: 'https://images.unsplash.com/photo-1625337439095-0b45185b3644?w=360&h=360&fit=crop', brand: 'Shan Loray', name: 'Precision Eyeliner', shade: 'Midnight Black', price: '$32', rating: 5, reviews: 367 }
+    { image: '/images/remote/763627c354ed.jpg', brand: 'Shan Loray', name: 'Velvet Matte Lipstick', shade: 'Ruby Rose', price: '$48', rating: 5, reviews: 342 },
+    { image: '/images/remote/c63dfa48e6b4.jpg', brand: 'Shan Loray', name: 'Silk Eyeshadow Palette', shade: 'Golden Hour', price: '$89', rating: 5, reviews: 521 },
+    { image: '/images/remote/c608132b8e36.jpg', brand: 'Shan Loray', name: 'Luminous Foundation', shade: 'Warm Ivory', price: '$68', rating: 5, reviews: 467 },
+    { image: '/images/remote/5703a23a3a2e.jpg', brand: 'Shan Loray', name: 'Cream Blush', shade: 'Dusty Rose', price: '$42', rating: 5, reviews: 298 },
+    { image: '/images/remote/f0ab82e0660a.jpg', brand: 'Shan Loray', name: 'Glossy Lip Lacquer', shade: 'Berry Shimmer', price: '$38', rating: 5, reviews: 412 },
+    { image: '/images/remote/85663ec56043.jpg', brand: 'Shan Loray', name: 'Precision Eyeliner', shade: 'Midnight Black', price: '$32', rating: 5, reviews: 367 }
   ];
 
   const savedLooks = [
-    { date: 'Dec 20, 2024', products: '5 Products', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=280&h=280&fit=crop' },
-    { date: 'Dec 15, 2024', products: '4 Products', image: 'https://images.unsplash.com/photo-1611349411198-e26e0d5f4a52?w=280&h=280&fit=crop' },
-    { date: 'Dec 10, 2024', products: '6 Products', image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=280&h=280&fit=crop' },
-    { date: 'Dec 5, 2024', products: '3 Products', image: 'https://images.unsplash.com/photo-1556740772-1a741367b93e?w=280&h=280&fit=crop' }
+    { date: 'Dec 20, 2024', products: '5 Products', image: '/images/remote/76951d0e9050.jpg' },
+    { date: 'Dec 15, 2024', products: '4 Products', image: '/images/remote/90689dbddd6d.jpg' },
+    { date: 'Dec 10, 2024', products: '6 Products', image: '/images/remote/df635b7884b7.jpg' },
+    { date: 'Dec 5, 2024', products: '3 Products', image: '/images/remote/29b5bfe46aea.jpg' }
   ];
 
   const trendingLooks = [
-    { image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=380&h=460&fit=crop', creator: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop', desc: 'Natural Glow Makeup', products: 5, hearts: 1234, shares: 89 },
-    { image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=380&h=460&fit=crop', creator: 'Emma Wilson', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=48&h=48&fit=crop', desc: 'Bold Evening Look', products: 7, hearts: 2156, shares: 143 },
-    { image: 'https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?w=380&h=460&fit=crop', creator: 'Olivia Taylor', avatar: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=48&h=48&fit=crop', desc: 'Soft Romantic Style', products: 4, hearts: 987, shares: 67 }
+    { image: '/images/remote/77bda6b42082.jpg', creator: 'Sarah Chen', avatar: '/images/remote/80d86c869dda.jpg', desc: 'Natural Glow Makeup', products: 5, hearts: 1234, shares: 89 },
+    { image: '/images/remote/ac4ae4b25b25.jpg', creator: 'Emma Wilson', avatar: '/images/remote/be2171e678bf.jpg', desc: 'Bold Evening Look', products: 7, hearts: 2156, shares: 143 },
+    { image: '/images/remote/eef2299a9d9e.jpg', creator: 'Olivia Taylor', avatar: '/images/remote/5c779993e6b2.jpg', desc: 'Soft Romantic Style', products: 4, hearts: 987, shares: 67 }
   ];
 
   const howItWorksSteps = [
-    { number: '1', title: 'Choose Method', desc: 'Camera or upload photo', image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=120&h=120&fit=crop' },
-    { number: '2', title: 'Select Products', desc: 'Browse & test virtually', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=120&h=120&fit=crop' },
-    { number: '3', title: 'Save & Share', desc: 'Keep your favorite looks', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=120&h=120&fit=crop' }
+    { number: '1', title: 'Choose Method', desc: 'Camera or upload photo', image: '/images/remote/f3027855da0d.jpg' },
+    { number: '2', title: 'Select Products', desc: 'Browse & test virtually', image: '/images/remote/45561671ff32.jpg' },
+    { number: '3', title: 'Save & Share', desc: 'Keep your favorite looks', image: '/images/remote/faa8f7a34d25.jpg' }
   ];
 
   const proTips = [
@@ -61,9 +61,9 @@ export default function VirtualTryOnPage() {
   ];
 
   const recommendedProducts = [
-    { image: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=300&h=300&fit=crop', name: 'Luxury Lipstick Set', match: '95% Match', price: '$125' },
-    { image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300&h=300&fit=crop', name: 'Blush Palette Pro', match: '92% Match', price: '$78' },
-    { image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=300&h=300&fit=crop', name: 'Eye Shadow Deluxe', match: '90% Match', price: '$98' }
+    { image: '/images/remote/8962dc7e9c7c.jpg', name: 'Luxury Lipstick Set', match: '95% Match', price: '$125' },
+    { image: '/images/remote/743e98aeab18.jpg', name: 'Blush Palette Pro', match: '92% Match', price: '$78' },
+    { image: '/images/remote/761b86acbbbd.jpg', name: 'Eye Shadow Deluxe', match: '90% Match', price: '$98' }
   ];
 
   return (
@@ -79,7 +79,7 @@ export default function VirtualTryOnPage() {
 
         <div className="absolute right-[180px] top-1/2 transform -translate-y-1/2">
           <img 
-            src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400&h=400&fit=crop" 
+            src="/images/remote/e8ae1a66da61.jpg" 
             alt="Virtual Try-On Technology"
             className="w-[400px] h-[400px] object-cover rounded-[8px] shadow-[0_12px12rgba(0,0,0,0.12)]"
           />
@@ -124,9 +124,9 @@ export default function VirtualTryOnPage() {
               <h4 className="text-[18px] font-medium text-[#1A1A1A] mb-5">Select Products</h4>
               <div className="space-y-3">
                 {[
-                  { image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=80&h=80&fit=crop', name: 'Ruby Lipstick' },
-                  { image: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=80&h=80&fit=crop', name: 'Gold Eyeshadow' },
-                  { image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=80&h=80&fit=crop', name: 'Rose Blush' }
+                  { image: '/images/remote/e9ecdbb6aaef.jpg', name: 'Ruby Lipstick' },
+                  { image: '/images/remote/85194cecef30.jpg', name: 'Gold Eyeshadow' },
+                  { image: '/images/remote/4ad7a1397422.jpg', name: 'Rose Blush' }
                 ].map((product, idx) => (
                   <div key={idx} className="flex items-center gap-3 p-3 bg-[#F5F1EA] rounded-[8px] cursor-pointer">
                     <img src={product.image} alt={product.name} className="w-[80px] h-[80px] object-cover rounded-[6px]" />
@@ -462,3 +462,7 @@ export default function VirtualTryOnPage() {
     </div>
   );
 }
+
+
+
+

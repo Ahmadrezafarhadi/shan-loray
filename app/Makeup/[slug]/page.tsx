@@ -1,35 +1,29 @@
 // Makeup/[slug]/page.tsx
 import { notFound } from 'next/navigation';
-import { getMakeupProductBySlug, makeupProducts } from '../data/makeupProducts';
+import { ProductService } from '../../../lib/api/products';
 import MakeupProductDetailClient from './MakeupProductDetailClient';
-
-export async function generateStaticParams() {
-  return makeupProducts.map((product) => ({
-    slug: product.slug,
-  }));
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getMakeupProductBySlug(slug);
-  
-  if (!product) {
-    return { title: 'Product Not Found' };
+
+  try {
+    const product = await ProductService.getProduct(slug);
+    return {
+      title: `${product.name} - Shan Loray Makeup`,
+      description: product.short_description,
+    };
+  } catch (error) {
+    return { title: 'Product Not Found - Shan Loray' };
   }
-  
-  return {
-    title: `${product.name} - Shan Loray Makeup`,
-    description: product.shortDescription,
-  };
 }
 
 export default async function MakeupProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getMakeupProductBySlug(slug);
 
-  if (!product) {
+  try {
+    const product = await ProductService.getProduct(slug);
+    return <MakeupProductDetailClient product={product} />;
+  } catch (error) {
     notFound();
   }
-
-  return <MakeupProductDetailClient product={product} />;
 }

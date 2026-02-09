@@ -40,8 +40,8 @@ export const products: Product[] = [
     priceNumeric: 185,
     rating: 5,
     reviews: 248,
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1160&h=1360&fit=crop',
+    image: '/images/remote/569fb12ea069.jpg',
+    heroImage: '/images/remote/0a536c73e7e9.jpg',
     collection: 'Advanced Skincare Collection',
     shortDescription: 'A revolutionary peptide-rich formula that visibly reduces fine lines and wrinkles while boosting skin\'s natural collagen production. Experience transformative results with our most potent anti-aging serum.',
     fullDescription: [
@@ -50,11 +50,11 @@ export const products: Product[] = [
       'Suitable for all skin types, this transformative formula is particularly effective for mature skin showing signs of aging. Free from parabens, sulfates, and synthetic fragrances.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/fff423c0e0fe.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '30ml', price: '$185', selected: true, badge: null },
@@ -103,8 +103,8 @@ export const products: Product[] = [
     priceNumeric: 58,
     rating: 5,
     reviews: 312,
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1160&h=1360&fit=crop',
+    image: '/images/remote/1f8583802b71.jpg',
+    heroImage: '/images/remote/c4c0e52929dd.jpg',
     collection: 'Daily Essentials Collection',
     shortDescription: 'A gentle yet effective foaming cleanser that removes impurities without stripping skin of its natural moisture. Infused with botanical extracts for a refreshing cleanse.',
     fullDescription: [
@@ -113,11 +113,11 @@ export const products: Product[] = [
       'Perfect for all skin types, especially those with dry or sensitive skin looking for a cleanser that won\'t leave their skin feeling tight or stripped.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/fff423c0e0fe.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '150ml', price: '$58', selected: true, badge: null },
@@ -166,8 +166,8 @@ export const products: Product[] = [
     priceNumeric: 145,
     rating: 5,
     reviews: 189,
-    image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=1160&h=1360&fit=crop',
+    image: '/images/remote/fdb330883d64.jpg',
+    heroImage: '/images/remote/377c3277980b.jpg',
     collection: 'Advanced Skincare Collection',
     shortDescription: 'A targeted eye treatment that visibly reduces dark circles, puffiness, and fine lines around the delicate eye area. Formulated with caffeine and peptides.',
     fullDescription: [
@@ -176,11 +176,11 @@ export const products: Product[] = [
       'The lightweight gel-cream texture absorbs instantly without migrating into the eyes, making it perfect for use under concealer and throughout the day.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/112de88fcc4c.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '15ml', price: '$145', selected: true, badge: null },
@@ -228,8 +228,8 @@ export const products: Product[] = [
     priceNumeric: 165,
     rating: 5,
     reviews: 421,
-    image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1160&h=1360&fit=crop',
+    image: '/images/remote/74573eb84eab.jpg',
+    heroImage: '/images/remote/2c819e8d6ac7.jpg',
     collection: 'Hydration Collection',
     shortDescription: 'An ultra-rich moisturizer that provides 24-hour deep hydration while strengthening the skin barrier. Perfect for dry and mature skin types.',
     fullDescription: [
@@ -238,11 +238,11 @@ export const products: Product[] = [
       'The rich yet non-greasy texture melts into skin, creating a protective barrier that locks in moisture for a full 24 hours.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/ed7065db1acb.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '30ml', price: '$165', selected: true, badge: null },
@@ -291,8 +291,8 @@ export const products: Product[] = [
     priceNumeric: 88,
     rating: 5,
     reviews: 267,
-    image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=1160&h=1360&fit=crop',
+    image: '/images/remote/5ac964387086.jpg',
+    heroImage: '/images/remote/cb1de6cdf31e.jpg',
     collection: 'Brightening Collection',
     shortDescription: 'An overnight illuminating mask that works while you sleep to brighten, even skin tone, and reveal radiant skin by morning.',
     fullDescription: [
@@ -301,11 +301,11 @@ export const products: Product[] = [
       'The silky gel texture creates a breathable film that delivers active ingredients throughout the night without transferring to your pillow.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/7302227f30f8.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '50ml', price: '$88', selected: true, badge: null },
@@ -364,10 +364,10 @@ export const products: Product[] = [
     ],
     thumbnailImages: [
       '/images/Shop/Defense.jpeg',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '30ml', price: '$72', selected: true, badge: null },
@@ -415,8 +415,8 @@ export const products: Product[] = [
     priceNumeric: 380,
     rating: 5,
     reviews: 156,
-    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1160&h=1360&fit=crop',
+    image: '/images/remote/c608132b8e36.jpg',
+    heroImage: '/images/remote/2cedb954432a.jpg',
     collection: 'Gift Sets Collection',
     shortDescription: 'Everything you need for a complete luxury skincare routine. Includes cleanser, serum, moisturizer, and eye cream at a special set price.',
     fullDescription: [
@@ -425,11 +425,11 @@ export const products: Product[] = [
       'Save 20% compared to purchasing each product individually, all presented in our signature gift packaging.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/cf0295d6eab2.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: 'Standard', price: '$380', selected: true, badge: 'Save 20%' },
@@ -477,8 +477,8 @@ export const products: Product[] = [
     priceNumeric: 68,
     rating: 5,
     reviews: 298,
-    image: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=1160&h=1360&fit=crop',
+    image: '/images/remote/4750b357d20c.jpg',
+    heroImage: '/images/remote/181ac6ab07c2.jpg',
     collection: 'Treatment Collection',
     shortDescription: 'A deep-cleansing clay mask that draws out impurities, minimizes pores, and refines skin texture without over-drying.',
     fullDescription: [
@@ -487,11 +487,11 @@ export const products: Product[] = [
       'Perfect for weekly use as part of your skincare routine, or as a targeted treatment on oily areas for combination skin types.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/fff423c0e0fe.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '50ml', price: '$68', selected: true, badge: null },
@@ -539,8 +539,8 @@ export const products: Product[] = [
     priceNumeric: 198,
     rating: 5,
     reviews: 387,
-    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=360&h=360&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1160&h=1360&fit=crop',
+    image: '/images/remote/f5ef0c1545f3.jpg',
+    heroImage: '/images/remote/826e14d71d73.jpg',
     collection: 'Night Care Collection',
     shortDescription: 'A potent overnight serum that works with your skin\'s natural renewal cycle to repair, regenerate, and rejuvenate while you sleep.',
     fullDescription: [
@@ -549,11 +549,11 @@ export const products: Product[] = [
       'Wake up to visibly smoother, firmer, and more youthful-looking skin with consistent use.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=212&h=212&fit=crop'
+      '/images/remote/ba449f5ec0ae.jpg',
+      '/images/remote/e833a4552a01.jpg',
+      '/images/remote/9dcf41659ac7.jpg',
+      '/images/remote/3db0d7ca95d5.jpg',
+      '/images/remote/bd620cfdc9ea.jpg'
     ],
     sizes: [
       { size: '30ml', price: '$198', selected: true, badge: null },
@@ -603,3 +603,7 @@ export function getProductBySlug(slug: string): Product | undefined {
 export function getAllSlugs(): string[] {
   return products.map(p => p.slug);
 }
+
+
+
+

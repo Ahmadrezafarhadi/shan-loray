@@ -44,8 +44,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 245,
     rating: 5,
     reviews: 412,
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=560&h=560&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=1160&h=1360&fit=crop',
+    image: '/images/remote/f0047a5d6f22.jpg',
+    heroImage: '/images/remote/28e0a1717981.jpg',
     collection: 'Luxe Lips Collection',
     badge: 'BESTSELLER',
     category: 'featured',
@@ -56,11 +56,11 @@ export const makeupProducts: MakeupProduct[] = [
       'The magnetic closure case is crafted from weighted metal with a satin-gold finish, making each application feel like a luxury experience. Whether you\'re going for a natural everyday look or a dramatic evening statement, this collection has you covered.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/75c1ce0f610a.jpg',
+      '/images/remote/651bed8c8afe.jpg',
+      '/images/remote/c3eba2f21b0b.jpg',
+      '/images/remote/d6bda3da6218.jpg',
+      '/images/remote/8332ed61ec25.jpg'
     ],
     sizes: [
       { size: 'Full Set (12)', price: '$245', selected: true, badge: 'Best Value' },
@@ -111,8 +111,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 78,
     rating: 5,
     reviews: 534,
-    image: 'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=460&h=280&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=1160&h=1360&fit=crop',
+    image: '/images/remote/75c1ce0f610a.jpg',
+    heroImage: '/images/remote/c3eba2f21b0b.jpg',
     collection: 'Complexion Perfection',
     shades: ['#F5D4C4', '#E8C4B4', '#D4A894', '#C08874', '#A86854', '#8E5844'],
     category: 'horizontal',
@@ -123,11 +123,11 @@ export const makeupProducts: MakeupProduct[] = [
       'Formulated with light-reflecting micro-pearls and skin-loving ingredients like hyaluronic acid and niacinamide, this foundation not only perfects your complexion but actively improves your skin over time.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/d6bda3da6218.jpg',
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/1a2b6924ff80.jpg',
+      '/images/remote/ff1ce4f4bab6.jpg',
+      '/images/remote/d6bda3da6218.jpg'
     ],
     sizes: [
       { size: '30ml', price: '$78', selected: true, badge: null },
@@ -175,8 +175,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 145,
     rating: 5,
     reviews: 298,
-    image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=460&h=280&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=1160&h=1360&fit=crop',
+    image: '/images/remote/75c1ce0f610a.jpg',
+    heroImage: '/images/remote/c3eba2f21b0b.jpg',
     collection: 'Eye Artistry Collection',
     badge: 'NEW',
     category: 'horizontal',
@@ -187,11 +187,11 @@ export const makeupProducts: MakeupProduct[] = [
       'The mix of matte, satin, and shimmer finishes allows you to create everything from a natural "no-makeup" look to a sultry evening eye with just one palette.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/34ecc717ec77.jpg',
+      '/images/remote/00dce48204c3.jpg',
+      '/images/remote/c3eba2f21b0b.jpg',
+      '/images/remote/75c1ce0f610a.jpg'
     ],
     sizes: [
       { size: 'Full Size (10 pans)', price: '$145', selected: true, badge: null },
@@ -241,8 +241,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 52,
     rating: 5,
     reviews: 621,
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1160&h=1360&fit=crop',
+    image: '/images/remote/d6bda3da6218.jpg',
+    heroImage: '/images/remote/8332ed61ec25.jpg',
     collection: 'Complexion Perfection',
     shades: ['#FADCC4', '#E8C8B0', '#D4A890', '#B88868', '#9C6848', '#7E5438'],
     category: 'square',
@@ -253,11 +253,11 @@ export const makeupProducts: MakeupProduct[] = [
       'Available in 30 shades across warm, cool, and neutral undertones, with dedicated corrector shades for targeted color correction.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/faa8f7a34d25.jpg',
+      '/images/remote/83a0156e8e9e.jpg',
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/75c1ce0f610a.jpg',
+      '/images/remote/c3eba2f21b0b.jpg'
     ],
     sizes: [
       { size: '8ml', price: '$52', selected: true, badge: null },
@@ -305,8 +305,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 68,
     rating: 5,
     reviews: 445,
-    image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=300&h=300&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=1160&h=1360&fit=crop',
+    image: '/images/remote/09be4fda1ead.jpg',
+    heroImage: '/images/remote/9d0bdf0ddfcf.jpg',
     collection: 'Cheek Glow Collection',
     category: 'square',
     shortDescription: 'A dual-pan blush compact featuring complementary shades that can be worn alone or blended together for a customized flush of color with a luminous, healthy glow.',
@@ -316,11 +316,11 @@ export const makeupProducts: MakeupProduct[] = [
       'Each duo is thoughtfully curated for different skin tones, ensuring that every shade combination looks naturally beautiful and never ashy or chalky.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=212&h=212&fit=crop'
+      '/images/remote/1aa04a87ab6f.jpg',
+      '/images/remote/09be4fda1ead.jpg',
+      '/images/remote/75c1ce0f610a.jpg',
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/c3eba2f21b0b.jpg'
     ],
     sizes: [
       { size: 'Duo Compact', price: '$68', selected: true, badge: null },
@@ -368,8 +368,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 58,
     rating: 5,
     reviews: 789,
-    image: 'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=300&h=300&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=1160&h=1360&fit=crop',
+    image: '/images/remote/8e7cdb4e3135.jpg',
+    heroImage: '/images/remote/00dce48204c3.jpg',
     collection: 'Glow Collection',
     category: 'square',
     shortDescription: 'A multi-dimensional powder highlighter that catches and reflects light for a natural, lit-from-within glow. Buildable from a subtle sheen to a blinding highlight.',
@@ -379,11 +379,11 @@ export const makeupProducts: MakeupProduct[] = [
       'The baked formula means each pan is unique, with a marbled pattern that\'s as beautiful to look at as it is to wear. The silky-smooth texture melts onto the skin for a truly seamless glow.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop'
+      '/images/remote/c3eba2f21b0b.jpg',
+      '/images/remote/75c1ce0f610a.jpg',
+      '/images/remote/d6bda3da6218.jpg',
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/0c470a657c15.jpg'
     ],
     sizes: [
       { size: '8g', price: '$58', selected: true, badge: null },
@@ -433,8 +433,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 395,
     rating: 5,
     reviews: 203,
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=470&h=400&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1160&h=1360&fit=crop',
+    image: '/images/remote/f2c18d05be14.jpg',
+    heroImage: '/images/remote/651bed8c8afe.jpg',
     collection: 'Professional Collection',
     badge: 'LIMITED EDITION',
     category: 'rectangular',
@@ -445,11 +445,11 @@ export const makeupProducts: MakeupProduct[] = [
       'Whether you\'re a professional makeup artist building your kit or a beauty lover who wants the complete Shan Loray experience, this set delivers exceptional value at 30% off the individual retail price.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1625025403725-fb026f06ab3c?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/75c1ce0f610a.jpg',
+      '/images/remote/c3eba2f21b0b.jpg',
+      '/images/remote/d6bda3da6218.jpg',
+      '/images/remote/8332ed61ec25.jpg',
+      '/images/remote/e9ecdbb6aaef.jpg'
     ],
     sizes: [
       { size: 'Complete Set', price: '$395', selected: true, badge: 'Save 30%' },
@@ -497,8 +497,8 @@ export const makeupProducts: MakeupProduct[] = [
     priceNumeric: 185,
     rating: 5,
     reviews: 167,
-    image: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=470&h=400&fit=crop',
-    heroImage: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=1160&h=1360&fit=crop',
+    image: '/images/remote/85194cecef30.jpg',
+    heroImage: '/images/remote/4ad7a1397422.jpg',
     collection: 'Travel Collection',
     category: 'rectangular',
     shortDescription: 'A perfectly curated travel-size collection that ensures you never compromise on beauty while on the go. Includes mini versions of our best-selling makeup essentials in a chic travel pouch.',
@@ -508,11 +508,11 @@ export const makeupProducts: MakeupProduct[] = [
       'The set comes in an elegant vegan leather travel pouch with individual compartments to keep everything organized and protected during transit.'
     ],
     thumbnailImages: [
-      'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=212&h=212&fit=crop',
-      'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=212&h=212&fit=crop'
+      '/images/remote/a87a243c1f49.jpg',
+      '/images/remote/e6005a77cb30.jpg',
+      '/images/remote/377524dcab3b.jpg',
+      '/images/remote/fb78e59ef955.jpg',
+      '/images/remote/0e4f0530e857.jpg'
     ],
     sizes: [
       { size: 'Complete Travel Set', price: '$185', selected: true, badge: null },
@@ -561,3 +561,7 @@ export function getMakeupProductBySlug(slug: string): MakeupProduct | undefined 
 export function getAllMakeupSlugs(): string[] {
   return makeupProducts.map(p => p.slug);
 }
+
+
+
+
