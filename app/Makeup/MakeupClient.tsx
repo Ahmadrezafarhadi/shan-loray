@@ -35,11 +35,6 @@ export default function MakeupClient({ initialProducts, initialCategories }: Mak
   const coverageTypes = ['Sheer', 'Medium', 'Full'];
   const skinTones = ['Fair', 'Light', 'Medium', 'Tan', 'Deep', 'All Tones'];
 
-  const featuredProduct = products?.data.find(p => p.featured) || products?.data[0];
-  const horizontalProducts = products?.data.slice(1, 3) || [];
-  const squareProducts = products?.data.slice(3, 6) || [];
-  const rectangularProducts = products?.data.slice(6, 8) || [];
-
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,6 +106,11 @@ export default function MakeupClient({ initialProducts, initialCategories }: Mak
       </div>
     );
   }
+
+  const featuredProduct = products.data.find(p => p.featured) || products.data[0];
+  const horizontalProducts = products.data.slice(1, 3);
+  const squareProducts = products.data.slice(3, 6);
+  const rectangularProducts = products.data.slice(6, 8);
 
   return (
     <div className="bg-white font-['Cormorant_Garamond']">
