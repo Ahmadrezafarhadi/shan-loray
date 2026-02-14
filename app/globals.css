@@ -2,9 +2,8 @@
 
 
 #root {
-  width: 1440; /* root */
+  width: 1440; 
   min-height: fit;
-  /* Supporting Fixed Position on root */
   will-change: transform;
 
   font-synthesis: none;
