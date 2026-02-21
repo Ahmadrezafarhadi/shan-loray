@@ -8,5 +8,6 @@ export * from './orders';
 export * from './profile';
 export * from './specialists';
 export * from './collections';
+export * from './admin';
 export * from './config';
 

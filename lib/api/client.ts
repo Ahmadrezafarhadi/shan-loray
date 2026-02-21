@@ -1,4 +1,4 @@
-import { API_CONFIG, ApiError, ApiResponse } from './config';
+import { API_CONFIG, ApiError } from './config';
 
 class ApiClient {
   private baseURL: string;
@@ -9,6 +9,25 @@ class ApiClient {
     // Initialize token from localStorage if available
     if (typeof window !== 'undefined') {
       this.token = localStorage.getItem('auth_token');
+    }
+  }
+
+  private async fetchWithTimeout(input: RequestInfo | URL, init: RequestInit): Promise<Response> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT);
+
+    try {
+      return await fetch(input, {
+        ...init,
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error(`Request timeout after ${API_CONFIG.TIMEOUT}ms: ${this.baseURL}`);
+      }
+      throw new Error(`Unable to connect to API: ${this.baseURL}`);
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 
@@ -105,13 +124,12 @@ class ApiClient {
         });
       }
 
-      const response = await fetch(url.toString(), {
+      const timedResponse = await this.fetchWithTimeout(url.toString(), {
         method: 'GET',
         headers: this.getAuthHeaders(),
-        signal: AbortSignal.timeout(API_CONFIG.TIMEOUT),
       });
 
-      return this.handleResponse<T>(response);
+      return this.handleResponse<T>(timedResponse);
     });
   }
 
@@ -123,11 +141,10 @@ class ApiClient {
     return this.retryRequest(async () => {
       const headers = isFormData ? {} : this.getAuthHeaders();
 
-      const response = await fetch(`${this.baseURL}${endpoint}`, {
+      const response = await this.fetchWithTimeout(`${this.baseURL}${endpoint}`, {
         method: 'POST',
         headers,
         body: isFormData ? data : JSON.stringify(data),
-        signal: AbortSignal.timeout(API_CONFIG.TIMEOUT),
       });
 
       return this.handleResponse<T>(response);
@@ -142,11 +159,10 @@ class ApiClient {
     return this.retryRequest(async () => {
       const headers = isFormData ? {} : this.getAuthHeaders();
 
-      const response = await fetch(`${this.baseURL}${endpoint}`, {
+      const response = await this.fetchWithTimeout(`${this.baseURL}${endpoint}`, {
         method: 'PUT',
         headers,
         body: isFormData ? data : JSON.stringify(data),
-        signal: AbortSignal.timeout(API_CONFIG.TIMEOUT),
       });
 
       return this.handleResponse<T>(response);
@@ -161,11 +177,10 @@ class ApiClient {
     return this.retryRequest(async () => {
       const headers = isFormData ? {} : this.getAuthHeaders();
 
-      const response = await fetch(`${this.baseURL}${endpoint}`, {
+      const response = await this.fetchWithTimeout(`${this.baseURL}${endpoint}`, {
         method: 'PATCH',
         headers,
         body: isFormData ? data : JSON.stringify(data),
-        signal: AbortSignal.timeout(API_CONFIG.TIMEOUT),
       });
 
       return this.handleResponse<T>(response);
@@ -174,10 +189,9 @@ class ApiClient {
 
   public async delete<T>(endpoint: string): Promise<T> {
     return this.retryRequest(async () => {
-      const response = await fetch(`${this.baseURL}${endpoint}`, {
+      const response = await this.fetchWithTimeout(`${this.baseURL}${endpoint}`, {
         method: 'DELETE',
         headers: this.getAuthHeaders(),
-        signal: AbortSignal.timeout(API_CONFIG.TIMEOUT),
       });
 
       return this.handleResponse<T>(response);

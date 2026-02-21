@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
@@ -122,6 +123,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/consultations/{consultation}/cancel', [ConsultationController::class, 'cancel']);
         Route::post('/consultations/{consultation}/reschedule', [ConsultationController::class, 'reschedule']);
         Route::post('/consultations/{consultation}/rate', [ConsultationController::class, 'rate']);
+
+        // Admin Dashboard
+        Route::middleware('admin')->prefix('admin')->group(function () {
+            Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+        });
 
     });
 

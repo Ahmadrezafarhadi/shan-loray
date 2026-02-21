@@ -27,6 +27,7 @@ export const normalizeUser = (raw: any): User => {
     id: toNumber(raw?.id),
     name: name || 'User',
     email: toString(raw?.email),
+    is_admin: !!raw?.is_admin,
     email_verified_at: raw?.email_verified_at ?? undefined,
     created_at: raw?.created_at ?? new Date().toISOString(),
     updated_at: raw?.updated_at ?? new Date().toISOString(),

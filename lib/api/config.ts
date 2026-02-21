@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1',
   TIMEOUT: 10000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
@@ -132,6 +132,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  is_admin?: boolean;
   email_verified_at?: string;
   created_at: string;
   updated_at: string;
@@ -300,6 +301,67 @@ export interface CheckoutRequest {
   payment_method?: 'card' | 'paypal' | 'cod';
   shipping_method?: string;
   notes?: string;
+}
+
+export interface AdminSummary {
+  total_orders: number;
+  total_revenue: number;
+  average_order_value: number;
+  today_orders: number;
+  today_revenue: number;
+  total_customers: number;
+  active_customers: number;
+  new_customers_in_range: number;
+  orders_in_range: number;
+  revenue_in_range: number;
+}
+
+export interface AdminBreakdownItem {
+  status?: string;
+  payment_method?: string;
+  count: number;
+}
+
+export interface AdminMonthlySalesItem {
+  month: string;
+  label: string;
+  revenue: number;
+  orders: number;
+}
+
+export interface AdminTopProduct {
+  product_id: number;
+  product_name: string;
+  units_sold: number;
+  revenue: number;
+}
+
+export interface AdminRecentOrder {
+  id: number;
+  order_number: string;
+  status: string;
+  total: number;
+  payment_status: string;
+  items_count: number;
+  created_at: string;
+  customer: {
+    name: string;
+    email: string;
+  };
+}
+
+export interface AdminDashboardData {
+  summary: AdminSummary;
+  status_breakdown: AdminBreakdownItem[];
+  payment_method_breakdown: AdminBreakdownItem[];
+  monthly_sales: AdminMonthlySalesItem[];
+  top_products: AdminTopProduct[];
+  recent_orders: AdminRecentOrder[];
+  filters: {
+    range: '7d' | '30d' | '90d' | string;
+    from: string;
+    to: string;
+  };
 }
 
 

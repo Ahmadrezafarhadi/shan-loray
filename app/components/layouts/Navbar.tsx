@@ -64,6 +64,9 @@ export default function Navbar() {
 
     return [
       { icon: IoPersonOutline, label: 'Account Dashboard', hasArrow: true, href: '/Dashboard' },
+      ...(user?.is_admin
+        ? [{ icon: IoSparkles, label: 'Admin Panel', hasArrow: true, href: '/admin' as const }]
+        : []),
       { icon: IoDocumentTextOutline, label: 'Order History', hasArrow: true, href: '/Dashboard/Track-orders' },
       { icon: IoHeartOutline, label: 'My Wishlist', hasArrow: true, href: '/Dashboard/Wishlist' },
       { icon: IoSparkles, label: 'Beauty Profile', hasArrow: true, href: '/Beauty-profile' },
