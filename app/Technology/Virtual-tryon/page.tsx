@@ -449,7 +449,7 @@ export default function VirtualTryOnPage() {
         </div>
         
         <div className="border-t border-[#3D3D3D] pt-8 flex justify-between items-center">
-          <p className="text-[14px] font-normal text-[#808080]">© 2024 Shan Loray. All rights reserved.</p>
+          <p className="text-[14px] font-normal text-[#808080]">© 2024. All rights reserved.</p>
           <div className="flex gap-10">
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
               <span key={link} className="text-[14px] font-normal text-[#808080] cursor-pointer">

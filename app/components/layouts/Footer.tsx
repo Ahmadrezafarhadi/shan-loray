@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-[#3D3D3D] pt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-          <p className="text-[14px] font-normal text-[#808080]">© 2024 Shan Loray. All rights reserved.</p>
+          <p className="text-[14px] font-normal text-[#808080]">© 2024. All rights reserved.</p>
           <div className="flex flex-wrap gap-4 sm:gap-10">
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
               <span key={link} className="text-[14px] font-normal text-[#808080] cursor-pointer">
